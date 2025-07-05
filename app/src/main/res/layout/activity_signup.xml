@@ -21,12 +21,14 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SIGN UP"
-            android:textColor="#009344"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
 
-            android:layout_marginBottom="16dp" />
+            android:fontFamily="@font/maven_pro_medium"
+            android:text="@string/signup"
+            android:textColor="#009344"
+
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
         <!-- Card for input fields -->
 
@@ -99,6 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:hintTextColor="#009344"
+                app:boxStrokeColor="#009344"
                 android:hint="Registration Number">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -113,14 +117,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:hintTextColor="#009344"
+                app:boxStrokeColor="#009344"
                 android:hint="role">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRole"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:padding="15dp" />
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Course Name -->
@@ -129,6 +133,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:hintTextColor="#009344"
+                app:boxStrokeColor="#009344"
                 android:hint="Course Name">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -143,6 +149,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:hintTextColor="#009344"
+                app:boxStrokeColor="#009344"
                 android:hint="enrolment year">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -159,13 +167,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                app:hintTextColor="#009344"
+                app:boxStrokeColor="#009344"
+                android:hint="Password"
                 app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -175,21 +185,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                android:hint="Confirm password"
+                app:hintTextColor="#009344"
+                app:boxStrokeColor="#009344"
                 app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Confirm password"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
-
-        <!-- Sign Up Button -->
-
-        <!-- Login Text -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btnSignUp"
