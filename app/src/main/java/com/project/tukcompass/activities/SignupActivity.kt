@@ -11,12 +11,14 @@ import androidx.activity.viewModels
 import com.project.tukcompass.databinding.ActivitySignupBinding
 import com.project.tukcompass.models.SignupReqModel
 import com.project.tukcompass.utills.Resource
-import com.project.tukcompass.viewModels.SignupViewModel
+import com.project.tukcompass.viewModels.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupBinding
-    private val viewModel: SignupViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +61,11 @@ class SignupActivity : AppCompatActivity() {
                }
             }
         }
+        binding.tvLogin.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
-
     private fun validateInput(
         fname: String,
         lname: String,
