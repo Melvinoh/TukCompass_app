@@ -69,4 +69,5 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation("com.google.android.material:material:1.11.0")
+    implementation ("androidx.compose.material:material-icons-extended:1.6.0")
 }

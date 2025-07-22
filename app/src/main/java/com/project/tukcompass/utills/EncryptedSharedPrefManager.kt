@@ -28,7 +28,6 @@ class EncryptedSharedPrefManager(context: Context) {
     fun getToken(): String? {
         return sharedPreferences.getString("token", null)
     }
-
     fun saveUser(user: UserModels) {
         val userJson = gson.toJson(user)
         editor.putString("user", userJson)

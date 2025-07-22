@@ -15,9 +15,6 @@ class EventsAdapter(private val events: List<EventModel>, onItemClick: (EventMod
         }
     }
 
-
-
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

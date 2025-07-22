@@ -26,6 +26,8 @@
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
         app:itemIconSize="24dp"
+        app:itemIconTint="@color/color"
+        app:menu="@menu/navigation_bar"
         app:itemPaddingTop="18dp"
         android:fitsSystemWindows="true"
         app:labelVisibilityMode="labeled"

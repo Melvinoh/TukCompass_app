@@ -23,8 +23,5 @@ class HomeActivity : AppCompatActivity() {
         val user = sharedPrefManager.getUser()
         val token = sharedPrefManager.getToken()
 
-
-
-
     }
 }
