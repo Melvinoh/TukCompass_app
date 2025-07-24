@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@drawable/grey_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,11 +21,13 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
 
-           <com.google.android.material.imageview.ShapeableImageView
+           <de.hdodenhof.circleimageview.CircleImageView
                android:id="@+id/shapeableImageView3"
                android:layout_width="50dp"
                android:layout_height="50dp"
+               app:circularflow_radiusInDP="10dp"
                android:src="@drawable/cultural"
+               android:background="@drawable/round_bd"
                app:layout_constraintBottom_toBottomOf="parent"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toTopOf="parent" />
@@ -78,13 +82,86 @@
             android:scaleType="centerCrop"
             android:layout_marginTop="10dp"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:weightSum="3"
+            android:orientation="horizontal">
 
+            <LinearLayout
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/favourite_outlined"
+                    app:strokeColor="@color/green" />
+
+                <TextView
+                    android:id="@+id/likesTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 likes" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/comment"
+                    android:layout_marginEnd="10dp"
+                    app:strokeColor="@color/green"/>
+
+                <TextView
+                    android:id="@+id/commentsTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5 comments"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/share_outlined"
+                    android:layout_marginEnd="10dp"
+                    app:strokeColor="@color/green"/>
+
+                <TextView
+                    android:id="@+id/sharesTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 0 shares"/>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
 
 
 
     </LinearLayout>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

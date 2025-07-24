@@ -23,14 +23,14 @@ class AuthViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel(
 
     fun login(reqBody: LoginModels) {
         viewModelScope.launch{
-            _loginResponse.value = Resource.loading
+            _loginResponse.value = Resource.Loading
             val response = repo.login(reqBody)
             _loginResponse.postValue(response)
         }
     }
     fun signup(reqBody: SignupReqModel) {
         viewModelScope.launch {
-            _signupResponse.value = Resource.loading
+            _signupResponse.value = Resource.Loading
             val response = repo.signup(reqBody)
             _signupResponse.postValue(response)
         }

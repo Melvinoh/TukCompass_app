@@ -9,3 +9,7 @@ data class ClubSportModel(
     val description: String,
     val patron: String,
 )
+data class ClubSportResponse(
+    val clubSports: List<ClubSportModel>,
+    val message: String
+)

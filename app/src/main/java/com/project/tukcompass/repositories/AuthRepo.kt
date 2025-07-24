@@ -19,21 +19,21 @@ class AuthRepo @Inject constructor(private val api: Api) {
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {
-                    Resource.success(body)
+                    Resource.Success(body)
                 } else {
-                    Resource.error("Response body is null")
+                    Resource.Error("Response body is null")
                 }
             } else {
-                Resource.error("Request failed with code ${response.code()}",response.code())
+                Resource.Error("Request failed with code ${response.code()}",response.code())
             }
         }catch (e: IOException){
             Log.e("SignupNetworkError", e.localizedMessage ?: "IO Error")
-            Resource.error("Network Error: ${e.localizedMessage}")
+            Resource.Error("Network Error: ${e.localizedMessage}")
 
 
         }catch (e: Exception){
             Log.e("SignupGeneralError", e.localizedMessage ?: "General Error")
-            Resource.error("Conversion Error: ${e.localizedMessage}")
+            Resource.Error("Conversion Error: ${e.localizedMessage}")
         }
     }
 
@@ -43,19 +43,19 @@ class AuthRepo @Inject constructor(private val api: Api) {
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {
-                    Resource.success(body)
+                    Resource.Success(body)
                 } else {
-                    Resource.error("Response body is null")
+                    Resource.Error("Response body is null")
                 }
             } else {
-                Resource.error("Request failed with code ${response.code()}")
+                Resource.Error("Request failed with code ${response.code()}")
             }
         } catch (e: IOException) {
             Log.e("LoginNetworkError", e.localizedMessage ?: "IO Error")
-            Resource.error("Network Error: ${e.localizedMessage}")
+            Resource.Error("Network Error: ${e.localizedMessage}")
         } catch (e: Exception) {
             Log.e("LoginGeneralError", e.localizedMessage ?: "General Error")
-            Resource.error("Conversion Error: ${e.localizedMessage}")
+            Resource.Error("Conversion Error: ${e.localizedMessage}")
         }
     }
 }

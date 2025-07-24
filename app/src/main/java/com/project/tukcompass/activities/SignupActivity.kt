@@ -46,16 +46,16 @@ class SignupActivity : AppCompatActivity() {
 
             viewModel.signupResponse.observe(this) { response ->
                when(response){
-                   is Resource.success -> {
+                   is Resource.Success -> {
                        Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show()
                        val user = response.data.new_user
                        Log.d("UserLog", "${user}")
                        startActivity(Intent(this, LoginActivity::class.java))
                    }
-                   is Resource.error -> {
+                   is Resource.Error -> {
                        Toast.makeText(this, "Signup failed: ${response.message}", Toast.LENGTH_SHORT).show()
                    }
-                   is Resource.loading -> {
+                   is Resource.Loading -> {
                        Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show()
                    } else -> {}
                }

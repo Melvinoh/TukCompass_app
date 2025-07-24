@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
 
             viewModel.loginResponse.observe(this) { response ->
                 when (response) {
-                    is Resource.success -> {
+                    is Resource.Success -> {
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
 
                         val user: UserModels = response.data.user
@@ -60,11 +60,11 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
-                    is Resource.error -> {
+                    is Resource.Error -> {
                         Toast.makeText(this, "Login failed: ${response.message}", Toast.LENGTH_SHORT).show()
                         Log.d("error", "${response.message}")
                     }
-                    is Resource.loading -> {
+                    is Resource.Loading -> {
                         Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show()
                     }
                     else -> {}

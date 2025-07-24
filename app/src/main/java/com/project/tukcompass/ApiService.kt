@@ -1,8 +1,11 @@
 package com.project.tukcompass
 
 import com.project.tukcompass.models.AnnouncementModel
+import com.project.tukcompass.models.AnnouncementResponse
 import com.project.tukcompass.models.ClubSportModel
+import com.project.tukcompass.models.ClubSportResponse
 import com.project.tukcompass.models.EventModel
+import com.project.tukcompass.models.EventResponse
 import com.project.tukcompass.models.LoginModels
 import com.project.tukcompass.models.LoginResModel
 import com.project.tukcompass.models.SignupReqModel
@@ -20,12 +23,12 @@ interface Api {
  suspend fun login(@Body reqBody: LoginModels): Response<LoginResModel>
 
  @GET("events/getEvents")
- suspend fun getEvents(): Response<EventModel>
+ suspend fun getEvents(): Response<EventResponse>
 
- @GET("announcment/getAnnouncments")
- suspend fun getAnnouncements(): Response<AnnouncementModel>
+ @GET("announcment/getAnnouncments/")
+ suspend fun getAnnouncements(): Response<AnnouncementResponse>
 
  @GET("clubSports/getClubSport")
- suspend fun getClubSports(): Response<ClubSportModel>
+ suspend fun getClubSports(): Response<ClubSportResponse>
 
 }

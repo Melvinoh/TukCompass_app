@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     id("kotlin-kapt")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -65,9 +66,18 @@ dependencies {
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.kotlinx.coroutines.android)
     implementation (libs.androidx.security.crypto)
-    implementation (libs.gson )// For object serialization (optional)
+    implementation (libs.gson )
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    implementation("com.google.android.material:material:1.11.0")
-    implementation ("androidx.compose.material:material-icons-extended:1.6.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation (libs.androidx.material.icons.extended)
+    implementation(libs.circleimageview)
+    implementation (libs.material)
+    implementation ("com.google.android.material:material:1.12.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.activity:activity-ktx:1.9.1")
+
 }

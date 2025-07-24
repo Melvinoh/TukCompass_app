@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginTop="26dp"
+        android:padding="2dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,9 +20,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
             android:weightSum="6"
             android:layout_gravity="center"
+            android:padding="12dp"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
             android:orientation="horizontal">
 
             <ImageView
@@ -80,13 +84,13 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:padding="4dp"
+            android:layout_marginTop="6dp"
+            android:padding="2dp"
             tools:context=".fragments.HomeFragment">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="4dp"
+                android:padding="2dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -98,7 +102,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:padding="4dp">
+                        android:layout_marginHorizontal="4dp"
+                        android:padding="10dp">
 
                         <TextView
                             android:id="@+id/textView1"
@@ -109,33 +114,13 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="6dp"
-                                android:text="view all" />
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:src="@drawable/foward_arrow" />
-                        </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewCategory"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:paddingHorizontal="14dp"
+                        android:paddingHorizontal="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -153,7 +138,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:padding="4dp">
+                        android:layout_marginHorizontal="4dp"
+                        android:padding="10dp">
 
                         <TextView
                             android:id="@+id/textView2"
@@ -191,7 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:paddingHorizontal="14dp"
+                        android:paddingHorizontal="6dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -209,7 +195,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:padding="4dp">
+                        android:layout_marginHorizontal="4dp"
+                        android:padding="10dp">
 
                         <TextView
                             android:id="@+id/textView3"
@@ -247,7 +234,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:paddingHorizontal="14dp"
+                        android:paddingHorizontal="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -263,7 +250,8 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="4dp">
+                        android:layout_marginHorizontal="4dp"
+                        android:padding="10dp">
 
                         <TextView
                             android:id="@+id/textView5"
