@@ -4,10 +4,13 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.project.tukcompass.R
 import com.project.tukcompass.databinding.ActivityHomeBinding
 import com.project.tukcompass.fragments.HomeFragment
 import com.project.tukcompass.utills.EncryptedSharedPrefManager
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,16 +27,10 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
 
-        if (savedInstanceState == null) {
-            displayFragment(HomeFragment())
-        }
-
-    }
-    private fun displayFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, fragment)
-            .commit()
+        val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
 
     }
 }

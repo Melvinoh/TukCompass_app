@@ -11,7 +11,6 @@ import com.project.tukcompass.models.AnnouncementModel
 class AnnouncementAdapter(
     private var announcements: List<AnnouncementModel>,
     private val onItemClick: (AnnouncementModel) -> Unit
-
 ) : RecyclerView.Adapter<AnnouncementAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ViewholderAnnoncmentBinding)
@@ -34,15 +33,25 @@ class AnnouncementAdapter(
 
         val announcement = announcements[position]
         Log.d("adapter announcementLog", "${announcement}")
+
+        val isPdf = announcement.fileUrl.endsWith(".pdf")
+        val displayUrl = if (isPdf) {
+
+            val baseUrl = announcement.fileUrl.substringBeforeLast("/v")
+            val versionAndPath = announcement.fileUrl.substringAfterLast("/v")
+            "$baseUrl/fl_attachment,pg_1,f_jpg/v$versionAndPath"
+
+        }else{
+            announcement.fileUrl
+
+        }
         Glide.with(holder.itemView.context)
-            .load(announcement.fileUrl)
+            .load(displayUrl)
             .into(holder.binding.announcementImage)
 
         holder.itemView.setOnClickListener {
             onItemClick(announcements[position])
         }
-
-
     }
 
     override fun getItemCount(): Int = announcements.size

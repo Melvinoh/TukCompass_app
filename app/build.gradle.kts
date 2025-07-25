@@ -69,15 +69,16 @@ dependencies {
     implementation (libs.gson )
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    implementation("com.google.android.material:material:1.12.0")
+
     implementation (libs.androidx.material.icons.extended)
     implementation(libs.circleimageview)
     implementation (libs.material)
-    implementation ("com.google.android.material:material:1.12.0")
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.activity:activity-ktx:1.9.1")
-
+    implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 }

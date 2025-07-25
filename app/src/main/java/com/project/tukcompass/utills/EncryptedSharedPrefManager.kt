@@ -6,8 +6,12 @@ import androidx.security.crypto.MasterKey
 import androidx.security.crypto.MasterKeys
 import com.google.gson.Gson
 import com.project.tukcompass.models.UserModels
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class EncryptedSharedPrefManager(context: Context) {
+class EncryptedSharedPrefManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
     private val gson = Gson()
     private val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)

@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgView"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:scaleType="centerCrop"
@@ -50,7 +51,7 @@
                 android:layout_margin="16dp">
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/titleTxt"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
 
@@ -62,6 +63,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/dateTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/overlay_bg"
@@ -154,6 +156,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/descriptionTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"

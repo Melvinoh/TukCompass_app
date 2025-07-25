@@ -8,11 +8,10 @@
 
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/shapeableImageView2"
+        android:id="@+id/imgView"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:scaleType="centerCrop"
-
         android:src="@drawable/gala2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -23,21 +22,21 @@
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:background="@drawable/overlay_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView2"
-        app:layout_constraintEnd_toEndOf="@+id/shapeableImageView2"
-        app:layout_constraintStart_toStartOf="@+id/shapeableImageView2"
-        app:layout_constraintTop_toTopOf="@+id/shapeableImageView2" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgView"
+        app:layout_constraintEnd_toEndOf="@+id/imgView"
+        app:layout_constraintStart_toStartOf="@+id/imgView"
+        app:layout_constraintTop_toTopOf="@+id/imgView" />
 
     <TextView
+        android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="gala club"
         android:textColor="@color/white"
-        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/shapeableImageView2"
-        app:layout_constraintStart_toStartOf="@+id/shapeableImageView2"
-        app:layout_constraintTop_toTopOf="@+id/shapeableImageView2" />
+        app:layout_constraintEnd_toEndOf="@+id/imgView"
+        app:layout_constraintStart_toStartOf="@+id/imgView"
+        app:layout_constraintTop_toTopOf="@+id/imgView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

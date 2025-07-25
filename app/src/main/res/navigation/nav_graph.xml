@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/Home_btn">
+
+    <fragment
+        android:id="@+id/Home_btn"
+        android:name="com.project.tukcompass.fragments.HomeFragment"
+        android:label="Home"/>
+
+    <fragment
+        android:id="@+id/academics_btn"
+        android:name="com.project.tukcompass.fragments.AcademicsFragment"
+        android:label="Academics" />
+
+    <fragment
+        android:id="@+id/chats_btn"
+        android:name="com.project.tukcompass.fragments.ChatFragment"
+        android:label="chats" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/account_btn"
+        android:name="com.project.tukcompass.fragments.AccountFragment"
+        android:label="Account" />
+
+    <fragment
+        android:id="@+id/eventsDetailsFragment"
+        android:name="com.project.tukcompass.fragments.EventDetailsFragment"
+        android:label="event" />
+
+    <fragment
+        android:id="@+id/eventsFragment"
+        android:name="com.project.tukcompass.fragments.EventsFragment"
+        android:label="event" />
+    <fragment
+        android:id="@+id/clubsFragment"
+        android:name="com.project.tukcompass.fragments.ClubFragment"
+        android:label="event" />
+
+
+</navigation>

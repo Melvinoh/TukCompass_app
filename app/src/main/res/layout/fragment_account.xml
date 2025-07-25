@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.accountFragment">
+    tools:context=".fragments.AccountFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:textSize="20sp"
+        android:layout_marginTop="42dp"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:text="user Profile" />
 
 </FrameLayout>

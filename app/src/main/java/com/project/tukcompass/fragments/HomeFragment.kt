@@ -8,23 +8,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.tukcompass.R
 import com.project.tukcompass.adapters.AnnouncementAdapter
 import com.project.tukcompass.adapters.CategoryAdapter
 import com.project.tukcompass.adapters.EventsAdapter
+import com.project.tukcompass.adapters.MyGroupAdapter
 import com.project.tukcompass.databinding.FragmentHomeBinding
 import com.project.tukcompass.models.CategoryModel
+import com.project.tukcompass.utills.EncryptedSharedPrefManager
 import com.project.tukcompass.utills.Resource
 import com.project.tukcompass.viewModels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var sharedPrefManager: EncryptedSharedPrefManager
 
     val categoryList = listOf(
         CategoryModel("Syllabus", R.drawable.microphone),
@@ -45,7 +48,14 @@ class HomeFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPrefManager = EncryptedSharedPrefManager(requireContext())
 
+        val user = sharedPrefManager.getUser()
+        val token = sharedPrefManager.getToken()
+        binding.userName.text = user?.fname
+
+        Log.d("userLog", "${user}")
+        Log.d("tokenLog", "${token}")
 
         observeCategories()
 
@@ -55,14 +65,14 @@ class HomeFragment : Fragment() {
         viewModel.getAnnouncement()
         observeAnnouncements()
 
+        viewModel.getMyClubs()
+        observeMyClubs()
+
         binding.viewEvents.setOnClickListener {
             val fragment = EventsFragment()
             displayFragment(fragment)
         }
-
     }
-
-
     private fun observeCategories() {
 
         binding.viewCategory.layoutManager = LinearLayoutManager(
@@ -106,7 +116,7 @@ class HomeFragment : Fragment() {
                                     putParcelable("event", event)
                                 }
                             }
-                            displayFragment(fragment)
+                          findNavController().navigate(R.id.eventsFragment)
                         }
                     } else {
                         adapter.updateEvents(events) // Assuming EventsAdapter has an update method
@@ -115,6 +125,7 @@ class HomeFragment : Fragment() {
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
                     Log.d("error", "${response.message}")
+
                 }
                 is Resource.Loading -> {
                     Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
@@ -139,13 +150,12 @@ class HomeFragment : Fragment() {
                     if (adapter == null) {
                         binding.viewAnnouncement.adapter = AnnouncementAdapter(announcements) { announcement ->
 
-                            val fragment = EventDetailsFragment().apply {
+                            val fragment = AnnouncementDetailsFragment().apply {
                                 arguments = Bundle().apply {
                                     putParcelable("item", announcement)
                                 }
                             }
-                            displayFragment(fragment)
-
+                            fragment.show(childFragmentManager, "AnnouncementDetailsFragment")
                         }
                     } else {
                         adapter.updateAnnouncement(announcements)
@@ -165,17 +175,41 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    private fun observeClubSports(){
+    private fun observeMyClubs(){
         viewModel.clubSports.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    val clubSports = response.data?.clubSports ?: emptyList()
+                    Log.d("clubLog", "${clubSports}")
 
+                    binding.viewGroups.layoutManager = LinearLayoutManager(
+                        requireContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+                    val adapter = binding.viewGroups.adapter as? MyGroupAdapter
+
+                    if (adapter == null) {
+                        binding.viewGroups.adapter = MyGroupAdapter(clubSports) { clubSport ->
+                            val fragment = ClubFragment().apply {
+                                arguments = Bundle().apply {
+                                    putParcelable("club", clubSport)
+                                }
+                            }
+                            findNavController().navigate(R.id.clubsFragment)
+                        }
+                    } else {
+                        adapter.updateGroups(clubSports)
+                    }
                 }
                 is Resource.Error -> {
+                    Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
+                    Log.d("error", "${response.message}")
 
                 }
                 is Resource.Loading -> {
-
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                    Log.d("loading", "Loading")
                 }
                 else -> {}
             }

@@ -4,11 +4,23 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2025-07-24T10:06:28.961374800Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ICCY\.android\avd\Medium_Phone_Edited_1.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
         <DialogSelection>
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ICCY\.android\avd\Medium_Phone.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ICCY\.android\avd\Samsung_Galaxy_A51.avd" />
+              </handle>
+            </Target>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ICCY\.android\avd\Medium_Phone_Edited_1.avd" />
               </handle>
             </Target>
           </targets>

@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="2dp"
+        android:paddingBottom="120dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,14 +97,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="vertical">
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:layout_marginHorizontal="4dp"
-                        android:padding="10dp">
+                        android:padding="4dp">
 
                         <TextView
                             android:id="@+id/textView1"
@@ -118,7 +119,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewCategory"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:clipToPadding="false"
                         android:paddingHorizontal="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -132,14 +133,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="6dp"
                     android:orientation="vertical">
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginHorizontal="4dp"
-                        android:padding="10dp">
+                        android:padding="4dp">
 
                         <TextView
                             android:id="@+id/textView2"
@@ -189,14 +190,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="6dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginHorizontal="4dp"
-                        android:padding="10dp">
+                        android:padding="4dp">
 
                         <TextView
                             android:id="@+id/textView3"
@@ -229,10 +230,11 @@
 
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewAnnouncement"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:clipToPadding="false"
                         android:paddingHorizontal="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -251,7 +253,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
-                        android:padding="10dp">
+                        android:padding="4dp">
 
                         <TextView
                             android:id="@+id/textView5"
@@ -266,6 +268,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

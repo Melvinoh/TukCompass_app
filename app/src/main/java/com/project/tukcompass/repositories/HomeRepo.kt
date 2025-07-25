@@ -55,24 +55,28 @@ class HomeRepo @Inject constructor(private val api: Api) {
         }
     }
 
-    suspend fun getClubSport(): Resource<ClubSportResponse>{
-        val response = api.getClubSports()
+    suspend fun getMyClubs(): Resource<ClubSportResponse> {
         return try {
+            val response = api.getMyClubs()
+            Log.d("club response", "Response Code: ${response.code()}, Message: ${response.message()}")
+
             if (response.isSuccessful) {
-                val body = response.body()
-                if (body != null) {
-                    Resource.Success(body)
-                } else {
-                    Resource.Error("Response body is null")
-                }
-                } else {
-                Resource.Error("Request failed with code ${response.code()}")
+                Log.d("ClubAPI", "Response Body: ${response.body()!!.message}")
+                response.body()?.let {
+                    Resource.Success(it)
+                } ?: Resource.Error("Response body is null")
+            } else {
+                Resource.Error("Request failed with code ${response.code()} - ${response.message()}")
             }
         } catch (e: IOException) {
             Log.e("NetworkError", e.localizedMessage ?: "IO Error")
             Resource.Error("Network Error: ${e.localizedMessage}")
+        } catch (e: Exception) {
+            Log.e("UnexpectedError", e.localizedMessage ?: "Unexpected Error")
+            Resource.Error("Unexpected Error: ${e.localizedMessage}")
         }
     }
+
 
 
 

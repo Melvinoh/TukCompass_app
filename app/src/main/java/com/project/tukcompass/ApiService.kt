@@ -31,4 +31,8 @@ interface Api {
  @GET("clubSports/getClubSport")
  suspend fun getClubSports(): Response<ClubSportResponse>
 
+ @GET("clubSports/getMyClubs")
+ suspend fun getMyClubs(): Response<ClubSportResponse>
+
+
 }

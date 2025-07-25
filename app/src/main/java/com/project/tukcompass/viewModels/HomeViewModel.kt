@@ -28,7 +28,6 @@ class HomeViewModel  @Inject constructor(private val repo: HomeRepo) : ViewModel
     private var _clubSports = MutableLiveData<Resource<ClubSportResponse>>()
     val clubSports: LiveData<Resource<ClubSportResponse>> = _clubSports
 
-
     fun getEvents() {
         viewModelScope.launch {
            _events.value = Resource.Loading
@@ -36,7 +35,6 @@ class HomeViewModel  @Inject constructor(private val repo: HomeRepo) : ViewModel
             _events.postValue(response)
         }
     }
-
     fun getAnnouncement(){
         viewModelScope.launch {
             _announcements.value = Resource.Loading
@@ -44,15 +42,11 @@ class HomeViewModel  @Inject constructor(private val repo: HomeRepo) : ViewModel
             _announcements.postValue(response)
         }
     }
-
-    fun getClubSport(){
+    fun getMyClubs(){
         viewModelScope.launch {
             _clubSports.value = Resource.Loading
-            val response = repo.getClubSport()
+            val response = repo.getMyClubs()
             _clubSports.postValue(response)
         }
     }
-
-
-
 }
