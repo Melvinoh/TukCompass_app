@@ -4,16 +4,27 @@ import com.project.tukcompass.models.AnnouncementModel
 import com.project.tukcompass.models.AnnouncementResponse
 import com.project.tukcompass.models.ClubSportModel
 import com.project.tukcompass.models.ClubSportResponse
-import com.project.tukcompass.models.EventModel
+
+import com.project.tukcompass.models.CommentReqData
+import com.project.tukcompass.models.CommentRequest
+import com.project.tukcompass.models.CommentResponse
+
 import com.project.tukcompass.models.EventResponse
 import com.project.tukcompass.models.LoginModels
 import com.project.tukcompass.models.LoginResModel
+import com.project.tukcompass.models.PostResponse
 import com.project.tukcompass.models.SignupReqModel
 import com.project.tukcompass.models.SignupResModel
+import okhttp3.MultipartBody
+import okhttp3.Request
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface Api {
  @POST("registration/signup")
@@ -34,5 +45,24 @@ interface Api {
  @GET("clubSports/getMyClubs")
  suspend fun getMyClubs(): Response<ClubSportResponse>
 
+ @GET("posts/getPosts/{id}")
+ suspend fun getPosts(@Path("id") id: String): Response<PostResponse>
+
+
+
+
+ @POST("comments/getComments")
+ suspend fun getComments(@Body postID: CommentRequest): Response<CommentResponse>
+
+ @POST("comments/addComments")
+ suspend fun addComment(@Body reqBody: CommentReqData): Response<CommentResponse>
+
+
+ @Multipart
+ @POST("posts/addPost")
+ suspend fun createPost(@Part("description") description: RequestBody, @Part image: MultipartBody.Part?, @Part("clubID") clubID: String): Response<PostResponse>
 
 }
+
+
+

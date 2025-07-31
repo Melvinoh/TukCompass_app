@@ -13,13 +13,14 @@ import com.project.tukcompass.R
 import com.project.tukcompass.databinding.FragmentAnnouncementDetailsBinding
 import com.project.tukcompass.models.AnnouncementModel
 import com.project.tukcompass.utills.PdfDownload
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URL
-
+@AndroidEntryPoint
 class AnnouncementDetailsFragment : DialogFragment() {
 
     private  var _binding: FragmentAnnouncementDetailsBinding? = null

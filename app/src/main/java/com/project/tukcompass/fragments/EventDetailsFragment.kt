@@ -9,8 +9,9 @@ import com.bumptech.glide.Glide
 import com.project.tukcompass.R
 import com.project.tukcompass.databinding.FragmentEventDetailsBinding
 import com.project.tukcompass.models.EventModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class EventDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentEventDetailsBinding

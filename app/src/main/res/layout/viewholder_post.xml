@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_margin="10dp"
+    android:layout_marginBottom="16dp"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp"
-        android:background="@drawable/grey_bg"
+        android:layout_margin="4dp"
+        android:background="@drawable/white2_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,9 +23,9 @@
            android:layout_height="wrap_content">
 
            <de.hdodenhof.circleimageview.CircleImageView
-               android:id="@+id/shapeableImageView3"
-               android:layout_width="50dp"
-               android:layout_height="50dp"
+               android:id="@+id/profilePic"
+               android:layout_width="35dp"
+               android:layout_height="35dp"
                app:circularflow_radiusInDP="10dp"
                android:src="@drawable/cultural"
                android:background="@drawable/round_bd"
@@ -39,17 +40,19 @@
                android:layout_marginStart="20dp"
                android:orientation="vertical"
                app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintStart_toEndOf="@+id/shapeableImageView3"
+               app:layout_constraintStart_toEndOf="@+id/profilePic"
                app:layout_constraintTop_toTopOf="parent"
                app:layout_constraintVertical_bias="0.545">
 
                <TextView
+                   android:id="@+id/nameTxt"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginBottom="2dp"
                    android:text="Muturi Melvin" />
 
                <TextView
+                   android:id="@+id/timeTxt"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="4hr ago" />
@@ -70,12 +73,14 @@
        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Material Design is a design system built and supported by Google design. I just like getting their ass kicked by this unbeatable beast"
             android:layout_marginTop="10dp"/>
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/postImage"
             android:layout_width="wrap_content"
             android:layout_height="300dp"
             android:src="@drawable/tuk_2"
@@ -86,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:weightSum="3"
+            android:paddingHorizontal="4dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -113,6 +118,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"

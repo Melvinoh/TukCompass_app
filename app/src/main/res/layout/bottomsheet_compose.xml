@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,8 +9,8 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:background="@color/white"
+        android:layout_height="wrap_content">
 
         <com.google.android.material.bottomsheet.BottomSheetDragHandleView
             android:id="@+id/drag_handle"
@@ -28,34 +29,57 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
+            android:background="#99F0F0F0"
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/editTxt"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
+                android:layout_margin="2dp"
                 android:hint="Type a message"
+                android:background="#44F0F0F0"
                 android:padding="12dp"
                 android:layout_marginBottom="10dp"
                 android:textColor="#000"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="x"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="20sp"/>
+                android:layout_marginVertical="8dp">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="300dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:src="@drawable/cultural"
-                android:scaleType="centerCrop"/>
-            
-            
-            
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/previewImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cultural"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="10dp"
+                    android:text="x"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.046"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </LinearLayout>
 
@@ -63,28 +87,31 @@
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:paddingVertical="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content"
-
+            android:background="@color/white"
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/selectImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginBottom="4dp"
-                    android:src="@drawable/link"/>
+                    android:src="@drawable/picture"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="link"/>
+                    android:text="select image"/>
 
 
             </LinearLayout>
@@ -129,6 +156,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/submitPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"

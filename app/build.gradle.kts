@@ -81,4 +81,5 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.1")
     implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
 }

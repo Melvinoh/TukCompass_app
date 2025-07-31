@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+    android:layout_width="265dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="10dp"
     android:padding="6dp"
@@ -17,12 +17,10 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profilePic"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="90dp"
             android:layout_marginBottom="10dp"
             android:scaleType="centerCrop"
-            android:background="@color/material_on_background_disabled"
-
-            app:srcCompat="@drawable/cultural" />
+            app:srcCompat="@drawable/cultural"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="3D Animation Bootcamp"
-                android:textSize="16sp"
                 android:layout_marginBottom="6dp"
                 android:textStyle="bold" />
             <LinearLayout
@@ -53,12 +50,12 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
+
                         android:gravity="center"
                         android:orientation="horizontal">
 
                         <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="18dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/calendar_outlined"
                             android:layout_marginEnd="6dp"
@@ -66,6 +63,7 @@
 
                         <TextView
                             android:id="@+id/dateTxt"
+                            android:textSize="14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="14/03/2025"/>
@@ -77,7 +75,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="18dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/location_outlined"
                             android:layout_marginEnd="6dp"
@@ -86,6 +84,7 @@
                         <TextView
                             android:id="@+id/locationTxt"
                             android:layout_width="wrap_content"
+                            android:textSize="12sp"
                             android:layout_height="wrap_content"
                             android:text="lecture theater"/>
                     </LinearLayout>
@@ -101,7 +100,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="wrap_content"
+                            android:layout_width="18dp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/time_outlined"
                             android:layout_marginEnd="6dp"
@@ -110,6 +109,7 @@
                         <TextView
                             android:id="@+id/timeTxt"
                             android:layout_width="wrap_content"
+                            android:textSize="14sp"
                             android:layout_height="wrap_content"
                             android:text="08:00 - 13:00"/>
                     </LinearLayout>

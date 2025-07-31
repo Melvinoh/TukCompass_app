@@ -13,7 +13,7 @@ data class EventModel(
     val description: String,
     val location : String,
     val date: String,
-    val expiryDate: String,
+    val expiryDate: String?,
     val time: String,
     val targetGroup: String,
     val fileUrl : String,

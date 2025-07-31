@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.tukcompass.R
 import com.project.tukcompass.adapters.AnnouncementAdapter
@@ -30,12 +32,12 @@ class HomeFragment : Fragment() {
     private lateinit var sharedPrefManager: EncryptedSharedPrefManager
 
     val categoryList = listOf(
-        CategoryModel("Syllabus", R.drawable.microphone),
-        CategoryModel("past papers", R.drawable.notification),
-        CategoryModel("Clubs", R.drawable.favourite_outlined),
-        CategoryModel("Academics", R.drawable.share_outlined),
-        CategoryModel("My connects", R.drawable.calendar_outlined),
-        CategoryModel("My units", R.drawable.chats_outlined)
+        CategoryModel("Syllabus", R.drawable.curriculum),
+        CategoryModel("past papers", R.drawable.test),
+        CategoryModel("Clubs", R.drawable.clubs),
+        CategoryModel("Academics", R.drawable.sylabus),
+        CategoryModel("My connects", R.drawable.network),
+        CategoryModel("My units", R.drawable.winner)
     )
 
     override fun onCreateView(
@@ -52,10 +54,18 @@ class HomeFragment : Fragment() {
 
         val user = sharedPrefManager.getUser()
         val token = sharedPrefManager.getToken()
+
         binding.userName.text = user?.fname
 
         Log.d("userLog", "${user}")
         Log.d("tokenLog", "${token}")
+
+        binding.allEvents.setOnClickListener {
+
+            findNavController().navigate(R.id.eventsFragment,)
+
+        }
+
 
         observeCategories()
 
@@ -111,12 +121,8 @@ class HomeFragment : Fragment() {
                     val adapter = binding.viewEvents.adapter as? EventsAdapter
                     if (adapter == null) {
                         binding.viewEvents.adapter = EventsAdapter(events) { event ->
-                            val fragment = EventDetailsFragment().apply {
-                                arguments = Bundle().apply {
-                                    putParcelable("event", event)
-                                }
-                            }
-                          findNavController().navigate(R.id.eventsFragment)
+                            val bundle = bundleOf("event" to event)
+                            findNavController().navigate(R.id.eventsDetailsFragment,bundle)
                         }
                     } else {
                         adapter.updateEvents(events) // Assuming EventsAdapter has an update method
@@ -124,7 +130,7 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                    Log.d("error", "${response.message}")
+                    Log.d("error", "$response.message")
 
                 }
                 is Resource.Loading -> {
@@ -182,21 +188,19 @@ class HomeFragment : Fragment() {
                     val clubSports = response.data?.clubSports ?: emptyList()
                     Log.d("clubLog", "${clubSports}")
 
-                    binding.viewGroups.layoutManager = LinearLayoutManager(
+
+
+                    binding.viewGroups.layoutManager = GridLayoutManager(
                         requireContext(),
-                        LinearLayoutManager.HORIZONTAL,
-                        false
+                        2
                     )
+
                     val adapter = binding.viewGroups.adapter as? MyGroupAdapter
 
                     if (adapter == null) {
                         binding.viewGroups.adapter = MyGroupAdapter(clubSports) { clubSport ->
-                            val fragment = ClubFragment().apply {
-                                arguments = Bundle().apply {
-                                    putParcelable("club", clubSport)
-                                }
-                            }
-                            findNavController().navigate(R.id.clubsFragment)
+                            val bundle = bundleOf("club" to clubSport)
+                            findNavController().navigate(R.id.clubsFragment,bundle)
                         }
                     } else {
                         adapter.updateGroups(clubSports)
