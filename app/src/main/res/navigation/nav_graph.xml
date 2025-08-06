@@ -38,6 +38,31 @@
         android:id="@+id/clubsFragment"
         android:name="com.project.tukcompass.fragments.ClubFragment"
         android:label="event" />
+    <fragment
+        android:id="@+id/unitRegistrationFragment"
+        android:name="com.project.tukcompass.fragments.UnitRegistrationFragment"
+        android:label="unitRegitration" />
+    <fragment
+        android:id="@+id/unitEnrolmentFragment"
+        android:name="com.project.tukcompass.fragments.UnitEnrollmentFragment"
+        android:label="unitRegitration" />
+    <fragment
+        android:id="@+id/unitDetailsFragment"
+        android:name="com.project.tukcompass.fragments.UnitDetailsFragment"
+        android:label="unitRegitration" />
+
+    <fragment
+        android:id="@+id/unitContentFragment"
+        android:name="com.project.tukcompass.fragments.UnitContentFragment"
+        android:label="unitRegitration" />
+    <fragment
+        android:id="@+id/allClubSports"
+        android:name="com.project.tukcompass.fragments.AllClubSportFragment"
+        android:label="unitRegitration" />
+    <fragment
+        android:id="@+id/clubSportEnrollment"
+        android:name="com.project.tukcompass.fragments.ClubSportEnrolment"
+        android:label="unitRegitration" />
 
 
 </navigation>

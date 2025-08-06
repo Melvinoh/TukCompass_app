@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.tukcompass.databinding.EventsViewholderBinding
-import com.project.tukcompass.databinding.VieholderEventsBinding
 import com.project.tukcompass.models.EventModel
 
 class EventAdapterList (

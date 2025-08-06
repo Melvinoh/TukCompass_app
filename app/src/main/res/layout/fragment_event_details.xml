@@ -11,54 +11,61 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgView"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/cultural"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+
         <LinearLayout
             android:id="@+id/linearLayout7"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@drawable/overlay_bg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/linearLayout8"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="450dp"
             android:background="@drawable/white_bg"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="16dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
 
                 <TextView
                     android:id="@+id/titleTxt"
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="3D Animation Boot Camp"
-                    android:textSize="26sp"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
                     android:textStyle="bold"
+                    android:layout_marginEnd="18dp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/dateTxt"
+                    app:layout_constraintHorizontal_bias="0.092"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,19 +75,20 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/overlay_bg"
                     android:backgroundTint="@color/green"
-                    android:padding="10dp"
+                    android:layout_weight="0.8"
                     android:text="APR 24"
-                    android:textColor="@color/green"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_marginStart="4dp"
+                    android:textAlignment="center"
+                    android:paddingVertical="8dp"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -97,8 +105,8 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/location_outlined"
                             app:strokeColor="@color/green" />
@@ -107,8 +115,7 @@
                             android:id="@+id/locationTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="lecture theater"
-                            android:textSize="16sp" />
+                            android:text="lecture theater" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -125,8 +132,8 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/time_outlined"
                             app:strokeColor="@color/green" />
@@ -135,8 +142,7 @@
                             android:id="@+id/timeTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="08:00 - 13:00"
-                            android:textSize="16sp" />
+                            android:text="08:00 - 13:00" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -144,7 +150,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -152,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Event Description"
-                    android:textSize="16sp"
+
                     android:textStyle="bold" />
 
                 <TextView
@@ -163,7 +169,7 @@
                     android:text="The 3D Bootcamp offers a hands-on experience to kickstart 3D data science, equipping participants with the complete skillset to tackle real-world challenges and drive innovation in cutting-edge fields
 In this first-ever 3D Bootcamp, we explore 3D data science with Python, building 3D workflows and wielding Python to implement solutions. You will learn:
 The core concepts and representations of 3D data (meshes, point clouds, voxels, CAD Read more"
-                    android:textSize="16sp" />
+                    />
 
             </LinearLayout>
 
@@ -178,30 +184,31 @@ The core concepts and representations of 3D data (meshes, point clouds, voxels, 
                     android:layout_height="wrap_content"
 
                     android:text="Registration link"
-                    android:textSize="17sp"
+
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="https://docs.google.com/forms/d/e/1FAIpQLSerUywNudwWq0Ey86XUZE5oaWfMkmKmyhIdszj"
-                    android:textSize="14sp" />
+                    android:text="https://docs.google.com/forms/d/e/1FAIpQLSerUywNudwWq0Ey86XUZE5oaWfMkmKmyhIdszj" />
 
             </LinearLayout>
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginVertical="12dp">
+        android:padding="5dp"
+        android:layout_marginVertical="34dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/shapeableImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/back_arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -216,14 +223,12 @@ The core concepts and representations of 3D data (meshes, point clouds, voxels, 
             android:layout_height="wrap_content"
             android:text="Event Details"
             android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.452"
-            app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

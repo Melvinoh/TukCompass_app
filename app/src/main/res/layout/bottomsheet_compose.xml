@@ -9,7 +9,6 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="wrap_content">
 
         <com.google.android.material.bottomsheet.BottomSheetDragHandleView
@@ -36,7 +35,7 @@
             <EditText
                 android:id="@+id/editTxt"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:layout_margin="2dp"
                 android:hint="Type a message"
                 android:background="#44F0F0F0"
@@ -52,7 +51,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/previewImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="350dp"
                     android:layout_gravity="center"
                     android:layout_margin="6dp"
                     android:scaleType="centerCrop"
@@ -71,6 +70,7 @@
                     android:layout_marginTop="4dp"
                     android:padding="10dp"
                     android:text="x"
+                    android:visibility="gone"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.046"
@@ -90,7 +90,6 @@
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="horizontal">
 
             <LinearLayout

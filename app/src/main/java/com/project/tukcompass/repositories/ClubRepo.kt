@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import com.project.tukcompass.Api
+import com.project.tukcompass.models.ClubSportResponse
 import com.project.tukcompass.models.CommentReqData
 import com.project.tukcompass.models.CommentRequest
 import com.project.tukcompass.models.CommentResponse
@@ -44,14 +45,16 @@ class ClubRepo @Inject constructor(private val api: Api) {
 
     suspend fun createPost(description: String, clubID: String, imageUri: Uri?, context: Context): Resource<PostResponse> {
         return try {
+
             val descriptionPart = description.toRequestBody("text/plain".toMediaTypeOrNull())
+            val clubIDPart = clubID.toRequestBody("text/plain".toMediaTypeOrNull())
 
             val imagePart = imageUri?.let {
                 val file = File(getRealPathFromUri(context, it))
                 val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("image", file.name, requestFile)
             }
-            val response = api.createPost(descriptionPart, imagePart, clubID )
+            val response = api.createPost(descriptionPart, imagePart, clubIDPart )
             if (response.isSuccessful) {
                 response.body()?.let {
                     Resource.Success(it)
@@ -128,6 +131,51 @@ class ClubRepo @Inject constructor(private val api: Api) {
         val path = cursor?.getString(columnIndex ?: 0)
         cursor?.close()
         return path ?: ""
+    }
+
+
+    suspend fun getMyClubs(): Resource<ClubSportResponse> {
+        return try {
+            val response = api.getMyClubs()
+            Log.d("club response", "Response Code: ${response.code()}, Message: ${response.message()}")
+
+            if (response.isSuccessful) {
+                Log.d("ClubAPI", "Response Body: ${response.body()!!.message}")
+                response.body()?.let {
+                    Resource.Success(it)
+                } ?: Resource.Error("Response body is null")
+            } else {
+                Resource.Error("Request failed with code ${response.code()} - ${response.message()}")
+            }
+        } catch (e: IOException) {
+            Log.e("NetworkError", e.localizedMessage ?: "IO Error")
+            Resource.Error("Network Error: ${e.localizedMessage}")
+        } catch (e: Exception) {
+            Log.e("UnexpectedError", e.localizedMessage ?: "Unexpected Error")
+            Resource.Error("Unexpected Error: ${e.localizedMessage}")
+        }
+    }
+
+    suspend fun getClubSport(): Resource<ClubSportResponse> {
+        return try {
+            val response = api.getClubSports()
+            Log.d("club response", "Response Code: ${response.code()}, Message: ${response.message()}")
+
+            if (response.isSuccessful) {
+                Log.d("ClubAPI", "Response Body: ${response.body()!!.message}")
+                response.body()?.let {
+                    Resource.Success(it)
+                } ?: Resource.Error("Response body is null")
+            } else {
+                Resource.Error("Request failed with code ${response.code()} - ${response.message()}")
+            }
+        } catch (e: IOException) {
+            Log.e("NetworkError", e.localizedMessage ?: "IO Error")
+            Resource.Error("Network Error: ${e.localizedMessage}")
+        } catch (e: Exception) {
+            Log.e("UnexpectedError", e.localizedMessage ?: "Unexpected Error")
+            Resource.Error("Unexpected Error: ${e.localizedMessage}")
+        }
     }
 
 }

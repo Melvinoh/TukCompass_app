@@ -8,6 +8,8 @@ import com.project.tukcompass.models.ClubSportResponse
 import com.project.tukcompass.models.CommentReqData
 import com.project.tukcompass.models.CommentRequest
 import com.project.tukcompass.models.CommentResponse
+import com.project.tukcompass.models.CourseRequest
+import com.project.tukcompass.models.CourseResponse
 
 import com.project.tukcompass.models.EventResponse
 import com.project.tukcompass.models.LoginModels
@@ -15,6 +17,8 @@ import com.project.tukcompass.models.LoginResModel
 import com.project.tukcompass.models.PostResponse
 import com.project.tukcompass.models.SignupReqModel
 import com.project.tukcompass.models.SignupResModel
+import com.project.tukcompass.models.TimeSlots
+import com.project.tukcompass.models.TimetableResponse
 import okhttp3.MultipartBody
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -32,6 +36,9 @@ interface Api {
 
  @POST("auth/login")
  suspend fun login(@Body reqBody: LoginModels): Response<LoginResModel>
+
+ @POST("lecturer/fetchCourses")
+ suspend fun fetchCourses(@Body reqBody: CourseRequest): Response<CourseResponse>
 
  @GET("events/getEvents")
  suspend fun getEvents(): Response<EventResponse>
@@ -54,13 +61,16 @@ interface Api {
  @POST("comments/getComments")
  suspend fun getComments(@Body postID: CommentRequest): Response<CommentResponse>
 
+ @GET("timetable/studentTimetable")
+ suspend fun getStudentsTimetable(): Response<TimetableResponse>
+
  @POST("comments/addComments")
  suspend fun addComment(@Body reqBody: CommentReqData): Response<CommentResponse>
 
 
  @Multipart
  @POST("posts/addPost")
- suspend fun createPost(@Part("description") description: RequestBody, @Part image: MultipartBody.Part?, @Part("clubID") clubID: String): Response<PostResponse>
+ suspend fun createPost(@Part("description") description: RequestBody, @Part image: MultipartBody.Part?, @Part("clubID") clubID: RequestBody): Response<PostResponse>
 
 }
 

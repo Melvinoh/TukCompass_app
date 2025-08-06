@@ -1,60 +1,152 @@
 package com.project.tukcompass.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.tukcompass.R
+import com.project.tukcompass.adapters.MyGroupAdapter
+import com.project.tukcompass.adapters.TimeSlotAdapter
+import com.project.tukcompass.adapters.UpComingClassAdapter
+import com.project.tukcompass.databinding.FragmentAcademicsBinding
+import com.project.tukcompass.databinding.FragmentHomeBinding
+import com.project.tukcompass.models.SessionDisplayItem
+import com.project.tukcompass.models.TimeSlots
+import com.project.tukcompass.models.TimetableResponse
+import com.project.tukcompass.utills.EncryptedSharedPrefManager
+import com.project.tukcompass.utills.Resource
+import com.project.tukcompass.viewModels.AcademicsViewHolder
+import com.project.tukcompass.viewModels.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Calendar
+import java.util.Locale
+import kotlin.collections.emptyList
+import kotlin.getValue
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AcademicsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class AcademicsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val viewModel: AcademicsViewHolder by viewModels()
+    private lateinit var binding: FragmentAcademicsBinding
+    private lateinit var sharedPrefManager: EncryptedSharedPrefManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_academics, container, false)
+        binding = FragmentAcademicsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AcademicsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AcademicsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getStudentsTimetable()
+
+        observeUpcomingClass()
+
+        observeTimetable()
+
     }
+
+    private fun observeTimetable(){
+        viewModel.timetable.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    val timetable = response.data.timetable ?: emptyList()
+                    Log.d("clubLog", "$timetable")
+
+                    binding.rvTimeslots.layoutManager = LinearLayoutManager(
+                        requireContext(),
+                        LinearLayoutManager.VERTICAL,
+                        false
+                    )
+
+                    val adapter = binding.rvTimeslots.adapter as? TimeSlotAdapter
+
+                    if (adapter == null) {
+                        binding.rvTimeslots.adapter = TimeSlotAdapter(timetable)
+                    } else {
+                        adapter.updateTimeSlots(timetable)
+                    }
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
+                    Log.d("error", "${response.message}")
+                }
+                is Resource.Loading -> {
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                    Log.d("loading", "Loading")
+                }
+                else -> {}
+            }
+        }
+    }
+    private fun observeUpcomingClass(){
+        viewModel.timetable.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    val timetable = response.data.timetable ?: emptyList()
+                    Log.d("timetable log ", "$timetable")
+
+
+                    val currentDay = getCurrentDay()
+                    val todaySessions = timetable.mapNotNull { slot ->
+                        val session = slot.sessions[currentDay]
+                        session?.let {
+                            SessionDisplayItem(
+                                unitName = it.unitName ?: "",
+                                lecturerName = it.lecturerName ?: "",
+                                mode = it.mode ?: "",
+                                startTime = slot.startTime,
+                                endTime = slot.endTime
+                            )
+                        }
+                    }
+
+                    binding.upcomingViewholder.layoutManager = LinearLayoutManager(
+                        requireContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+
+                    val adapter = binding.upcomingViewholder as? UpComingClassAdapter
+
+                    if (adapter == null) {
+                        binding.upcomingViewholder.adapter = UpComingClassAdapter(todaySessions)
+                    } else {
+                        adapter.updateSessions(todaySessions)
+                    }
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
+                    Log.d("error", "${response.message}")
+                }
+                is Resource.Loading -> {
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                    Log.d("loading", "Loading")
+                }
+                else -> {}
+            }
+        }
+    }
+
+    fun getCurrentDay(): String {
+        val calendar = Calendar.getInstance()
+        return SimpleDateFormat("EEEE", Locale.getDefault()).format(calendar.time)
+    }
+
+
 }

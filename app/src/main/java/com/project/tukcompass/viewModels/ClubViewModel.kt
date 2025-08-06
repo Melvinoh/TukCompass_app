@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.tukcompass.models.ClubSportResponse
 
 import com.project.tukcompass.models.CommentReqData
 import com.project.tukcompass.models.CommentRequest
@@ -23,12 +24,36 @@ import javax.inject.Inject
 class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel() {
 
 
+    private var _clubSports = MutableLiveData<Resource<ClubSportResponse>>()
+    val clubSports: LiveData<Resource<ClubSportResponse>> = _clubSports
+
+    private var _myClubSports = MutableLiveData<Resource<ClubSportResponse>>()
+    val myClubSports: LiveData<Resource<ClubSportResponse>> = _myClubSports
+
     private var _posts = MutableLiveData<Resource<PostResponse>>()
     val posts: LiveData<Resource<PostResponse>> = _posts
 
 
     private var _comments = MutableLiveData<Resource<CommentResponse>>()
     val comment: LiveData<Resource<CommentResponse>> = _comments
+
+
+
+    fun getClubSport(){
+        viewModelScope.launch {
+            _clubSports.value = Resource.Loading
+            val response = repo.getClubSport()
+            _clubSports.postValue(response)
+        }
+    }
+
+    fun getMyClubs(){
+        viewModelScope.launch {
+            _myClubSports.value = Resource.Loading
+            val response = repo.getMyClubs()
+            _myClubSports.postValue(response)
+        }
+    }
 
 
     fun getPosts(id: String) {

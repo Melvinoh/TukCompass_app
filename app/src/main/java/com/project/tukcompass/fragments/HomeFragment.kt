@@ -93,16 +93,17 @@ class HomeFragment : Fragment() {
         binding.viewCategory.adapter = CategoryAdapter(categoryList) { category ->
 
             when (category.title) {
-                "Syllabus" -> displayFragment(AcademicsFragment())
-                "past papers" -> displayFragment(AcademicsFragment())
-                "Clubs" -> displayFragment(ClubFragment())
-                "Academics" -> displayFragment(AcademicsFragment())
+                "Syllabus" -> findNavController().navigate(R.id.unitDetailsFragment)
+                "past papers" -> findNavController().navigate(R.id.unitEnrolmentFragment)
+                "Clubs" -> findNavController().navigate(R.id.allClubSports)
+                "Academics" -> findNavController().navigate(R.id.unitRegistrationFragment,)
                 "My connects" -> displayFragment(ChatFragment())
-                "My units" -> displayFragment(AccountFragment())
+                "My units" -> findNavController().navigate(R.id.unitContentFragment)
                 else -> Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
             }
 
         }
+
 
     }
 
@@ -192,7 +193,7 @@ class HomeFragment : Fragment() {
 
                     binding.viewGroups.layoutManager = GridLayoutManager(
                         requireContext(),
-                        2
+                        3
                     )
 
                     val adapter = binding.viewGroups.adapter as? MyGroupAdapter

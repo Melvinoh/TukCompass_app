@@ -21,12 +21,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:gravity="center"
+            android:padding="4dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+
                 android:text="Academics"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -35,19 +37,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="6dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/search" />
+                    android:src="@drawable/ic_search1" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/notification_outlined" />
+                    android:src="@drawable/ic_notification" />
             </LinearLayout>
         </LinearLayout>
         <androidx.core.widget.NestedScrollView
@@ -71,11 +74,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="upcomming classes"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="10dp"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="10dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/upcomingViewholder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="6dp"/>
@@ -91,14 +93,87 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Timetable"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="10dp"
-                        android:textStyle="bold" />
-
-                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginBottom="10dp" />
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="6dp"/>
+                        android:orientation="vertical">
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fillViewport="true"
+                            android:scrollbars="none">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="600dp"
+                                    android:layout_height="wrap_content"
+                                    android:weightSum="6"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:padding="4dp"
+                                        android:gravity="center"
+                                        android:text=""/>
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:padding="4dp"
+                                        android:gravity="center"
+                                        android:text="Mon"/>
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:layout_height="wrap_content"
+                                        android:padding="4dp"
+                                        android:text="Tue"/>
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:padding="4dp"
+                                        android:text="wed"/>
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:padding="4dp"
+                                        android:text="Thur"/>
+                                    <TextView
+                                        android:layout_width="100dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:layout_weight="1"
+                                        android:padding="4dp"
+                                        android:text="fri"/>
+
+                                </LinearLayout>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rvTimeslots"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:padding="6dp"
+                                    android:nestedScrollingEnabled="false"/>
+                            </LinearLayout>
+
+                        </HorizontalScrollView>
+
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -110,9 +185,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="assignments"
-                        android:textSize="16sp"
                         android:layout_marginBottom="10dp"
-                        android:textStyle="bold" />
+                        />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
@@ -129,9 +203,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="class Notices"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="10dp"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="10dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"

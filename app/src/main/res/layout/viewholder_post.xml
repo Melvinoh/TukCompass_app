@@ -9,97 +9,110 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp"
         android:layout_margin="4dp"
         android:background="@drawable/white2_bg"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:weightSum="4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-           <de.hdodenhof.circleimageview.CircleImageView
-               android:id="@+id/profilePic"
-               android:layout_width="35dp"
-               android:layout_height="35dp"
-               app:circularflow_radiusInDP="10dp"
-               android:src="@drawable/cultural"
-               android:background="@drawable/round_bd"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toTopOf="parent" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profilePic"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/round_bd"
+                android:src="@drawable/cultural"
+                app:circularflow_radiusInDP="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-           <LinearLayout
-               android:id="@+id/linearLayout3"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginStart="20dp"
-               android:orientation="vertical"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintStart_toEndOf="@+id/profilePic"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintVertical_bias="0.545">
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profilePic"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.545">
 
-               <TextView
-                   android:id="@+id/nameTxt"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginBottom="2dp"
-                   android:text="Muturi Melvin" />
+                <TextView
+                    android:id="@+id/nameTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="Muturi Melvin" />
 
-               <TextView
-                   android:id="@+id/timeTxt"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="4hr ago" />
+                <TextView
+                    android:id="@+id/timeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4hr ago" />
 
-           </LinearLayout>
+            </LinearLayout>
 
-           <com.google.android.material.imageview.ShapeableImageView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:scaleType="centerCrop"
-               android:src="@drawable/three_dots"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintHorizontal_bias="0.924"
-               app:layout_constraintStart_toEndOf="@+id/linearLayout3"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintVertical_bias="0.615" />
-       </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/three_dots"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.924"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.615" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Material Design is a design system built and supported by Google design. I just like getting their ass kicked by this unbeatable beast"
-            android:layout_marginTop="10dp"/>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/postImage"
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            android:src="@drawable/tuk_2"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="Material Design is a design system built and supported by Google design. I just like getting their ass kicked by this unbeatable beast" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:paddingHorizontal="4dp"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/postImage"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/tuk_2" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp">
 
             <LinearLayout
                 android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -121,52 +134,50 @@
                 android:id="@+id/comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="2"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/comment"
                     android:layout_marginEnd="10dp"
-                    app:strokeColor="@color/green"/>
+                    android:src="@drawable/comment"
+                    app:strokeColor="@color/green" />
 
                 <TextView
                     android:id="@+id/commentsTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5 comments"/>
+                    android:text="5 comments" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:gravity="end"
                 android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/share_outlined"
                     android:layout_marginEnd="10dp"
-                    app:strokeColor="@color/green"/>
+                    android:src="@drawable/share_outlined"
+                    app:strokeColor="@color/green" />
 
                 <TextView
                     android:id="@+id/sharesTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" 0 shares"/>
+                    android:text=" 0 shares" />
             </LinearLayout>
 
 
-
-
         </LinearLayout>
-
 
 
     </LinearLayout>

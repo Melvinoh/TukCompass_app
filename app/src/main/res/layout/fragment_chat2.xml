@@ -14,8 +14,8 @@
         android:elevation="4dp">
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/back_arrow"
 
             android:layout_marginEnd="12dp"/>
@@ -48,7 +48,7 @@
                 android:textSize="12sp"/>
         </LinearLayout>
 
-        <ImageView android:src="@drawable/search" android:layout_width="24dp" android:layout_height="24dp"/>
+        <ImageView android:src="@drawable/ic_search1" android:layout_width="30dp" android:layout_height="30dp"/>
         <ImageView android:src="@drawable/three_dots" android:layout_width="24dp" android:layout_height="24dp"
             android:rotation="90"
             android:layout_marginStart="12dp"/>

@@ -19,8 +19,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/shapeableImageView"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/back_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Event Announcement"
-                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -47,45 +46,48 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
+            android:padding="4dp"
             android:layout_marginBottom="20dp"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/events"
-                android:layout_width="150dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/grey_boarder"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="7dp"
-                android:text="announcment"
-                android:textAlignment="center"
-                android:textSize="16sp"
-
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.49"
-                app:layout_constraintStart_toEndOf="@+id/announcementImage"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/announcementImage"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_background"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="7dp"
-                android:text="events"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.228"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/announcementImage"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:background="@drawable/button_background"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="7dp"
+                    android:text="events"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+
+                <TextView
+                    android:id="@+id/events"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_boarder"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="7dp"
+                    android:text="announcment"
+                    android:textAlignment="center" />
+
+
+
+
+            </LinearLayout>
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -95,8 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
-            android:layout_marginBottom="100dp"
-            android:padding="10dp">
+            android:layout_marginBottom="100dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,15 +107,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="up comming events"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
+                        android:text="up comming events"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/upcomingEventHolder"
@@ -122,7 +121,7 @@
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
                         android:layout_marginTop="10dp"
-                        android:paddingHorizontal="8dp"
+                        android:paddingHorizontal="2dp"
                         app:layout_constraintVertical_bias="0.0" />
                 </LinearLayout>
 
@@ -134,9 +133,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Past events"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
+                        android:text="Past events" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/pastEventsHolder"
@@ -144,7 +141,7 @@
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
                         android:layout_marginTop="10dp"
-                        android:paddingHorizontal="8dp"
+                        android:paddingHorizontal="2dp"
                         app:layout_constraintVertical_bias="0.0" />
                 </LinearLayout>
 
