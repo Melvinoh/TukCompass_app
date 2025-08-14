@@ -2,7 +2,9 @@ package com.project.tukcompass
 
 import com.project.tukcompass.models.AnnouncementModel
 import com.project.tukcompass.models.AnnouncementResponse
+import com.project.tukcompass.models.ChatResponse
 import com.project.tukcompass.models.ClubSportModel
+import com.project.tukcompass.models.ClubSportReq
 import com.project.tukcompass.models.ClubSportResponse
 
 import com.project.tukcompass.models.CommentReqData
@@ -10,15 +12,20 @@ import com.project.tukcompass.models.CommentRequest
 import com.project.tukcompass.models.CommentResponse
 import com.project.tukcompass.models.CourseRequest
 import com.project.tukcompass.models.CourseResponse
+import com.project.tukcompass.models.EnrollmentStatus
+import com.project.tukcompass.models.EventRequest
 
 import com.project.tukcompass.models.EventResponse
 import com.project.tukcompass.models.LoginModels
 import com.project.tukcompass.models.LoginResModel
+import com.project.tukcompass.models.MessageResponse
 import com.project.tukcompass.models.PostResponse
 import com.project.tukcompass.models.SignupReqModel
 import com.project.tukcompass.models.SignupResModel
 import com.project.tukcompass.models.TimeSlots
 import com.project.tukcompass.models.TimetableResponse
+import com.project.tukcompass.models.UnitContentResponse
+import com.project.tukcompass.models.UnitData
 import okhttp3.MultipartBody
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -36,6 +43,14 @@ interface Api {
 
  @POST("auth/login")
  suspend fun login(@Body reqBody: LoginModels): Response<LoginResModel>
+
+
+ @POST("auth/login")
+ suspend fun addEvent(@Body reqBody: EventRequest): Response<EventResponse>
+
+
+
+
 
  @POST("lecturer/fetchCourses")
  suspend fun fetchCourses(@Body reqBody: CourseRequest): Response<CourseResponse>
@@ -55,7 +70,8 @@ interface Api {
  @GET("posts/getPosts/{id}")
  suspend fun getPosts(@Path("id") id: String): Response<PostResponse>
 
-
+ @POST("clubSports/enrollClubSport")
+ suspend fun enrollClubSport(@Body clubSportID : ClubSportReq) : Response<EnrollmentStatus>
 
 
  @POST("comments/getComments")
@@ -71,6 +87,32 @@ interface Api {
  @Multipart
  @POST("posts/addPost")
  suspend fun createPost(@Part("description") description: RequestBody, @Part image: MultipartBody.Part?, @Part("clubID") clubID: RequestBody): Response<PostResponse>
+
+
+ @GET("unitContent/getUnitOfferingContent/{unitOfferingID}")
+ suspend fun getUnitOfferingContent(@Path("unitOfferingID") offeringId: String): Response<UnitContentResponse>
+
+ @GET("unitContent/getUnitDetails/{unitID}")
+ suspend fun getUnitDetails(@Path("unitID") unitID: String): Response<UnitData>
+
+
+ @GET("chats/getUserChats")
+ suspend fun getUserChats(): Response<ChatResponse>
+
+ @GET("unitContent/getUnitDetails/{chatID}")
+ suspend fun getChatMessages(@Path("chatID") chatID: String): Response<MessageResponse>
+
+
+ @Multipart
+ @POST("events/createEvent")
+ suspend fun addEvent(
+  @Part("title") title: RequestBody,
+  @Part("description") description: RequestBody,
+  @Part("location") location: RequestBody,
+  @Part("date") date: RequestBody,
+  @Part("time") time: RequestBody,
+  @Part image: MultipartBody.Part?
+ ): Response<EventResponse>
 
 }
 

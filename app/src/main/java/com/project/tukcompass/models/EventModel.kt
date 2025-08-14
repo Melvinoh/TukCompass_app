@@ -25,3 +25,12 @@ data class  EventResponse(
     val message: String,
     val events: List<EventModel>
 ) : Parcelable
+
+
+data class EventRequest (
+    val title: String,
+    val description: String,
+    val location: String,
+    val date: String,
+    val time: String,
+)

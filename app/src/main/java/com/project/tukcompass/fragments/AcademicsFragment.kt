@@ -66,7 +66,7 @@ class AcademicsFragment : Fragment() {
             when (response) {
                 is Resource.Success -> {
                     val timetable = response.data.timetable ?: emptyList()
-                    Log.d("clubLog", "$timetable")
+                    Log.d("timetable", "$timetable")
 
                     binding.rvTimeslots.layoutManager = LinearLayoutManager(
                         requireContext(),
@@ -108,6 +108,8 @@ class AcademicsFragment : Fragment() {
                         session?.let {
                             SessionDisplayItem(
                                 unitName = it.unitName ?: "",
+                                unitID = it.unitID ?: "",
+                                unitOfferingID = it.unitOfferingID ?: "",
                                 lecturerName = it.lecturerName ?: "",
                                 mode = it.mode ?: "",
                                 startTime = slot.startTime,
@@ -125,7 +127,10 @@ class AcademicsFragment : Fragment() {
                     val adapter = binding.upcomingViewholder as? UpComingClassAdapter
 
                     if (adapter == null) {
-                        binding.upcomingViewholder.adapter = UpComingClassAdapter(todaySessions)
+                        binding.upcomingViewholder.adapter = UpComingClassAdapter(todaySessions){ unitDetails ->
+                            val bundle = bundleOf("unitDetails" to unitDetails)
+                            findNavController().navigate(R.id.unitDetailsFragment,bundle)
+                        }
                     } else {
                         adapter.updateSessions(todaySessions)
                     }

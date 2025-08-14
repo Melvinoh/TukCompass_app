@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.room.common.jvm)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -81,5 +82,14 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.1")
     implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation ("com.google.dagger:hilt-android:2.52")
+    kapt ("com.google.dagger:hilt-compiler:2.52")
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
+
+
 
 }

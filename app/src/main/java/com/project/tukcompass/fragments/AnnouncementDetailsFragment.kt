@@ -49,7 +49,6 @@ class AnnouncementDetailsFragment : DialogFragment() {
         ) ?: return dismiss()
 
         binding.titleTxt.text = announcement.title
-        binding.textView7.text = announcement.message
         binding.close.setOnClickListener {
             dismiss()
         }

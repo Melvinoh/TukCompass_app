@@ -1,60 +1,122 @@
 package com.project.tukcompass.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.tukcompass.R
+import com.project.tukcompass.adapters.ChatAdapter
+import com.project.tukcompass.databinding.FragmentChatBinding
+import com.project.tukcompass.models.ChatModel
+import com.project.tukcompass.utills.Resource
+import com.project.tukcompass.viewModels.ChatsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ChatFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding: FragmentChatBinding
+    private val viewModel: ChatsViewModel by viewModels()
+
+    val chatList = listOf(
+
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Muturi melvin", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754753739/chat_media/3dlog.jpg","hey there am using whatsapp","3:40pm"),
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Boyani Beverly", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410594/TukCompass/download_1.jpg  ","have you finished your project?","3:40pm"),
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","omwami joshua", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754411336/TukCompass/download_2.png","zz cdtahi nitakuwa available","3:40pm"),
+
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Lucy Abwodtha", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410961/TukCompass/download_4.jpg","kindly submmit your assignment on time","3:40pm"),
+
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","milly Kagweru", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410148/TukCompass/dance_baner","is the trip to mombasa confirmed ","3:40pm"),
+
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Eunice Njeri", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410961/TukCompass/download_4.jpg","i feel like crying","3:40pm"),
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Dr Edwin", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410414/TukCompass/3D-4.jpg ","Kindly present your work by tommorow","3:40pm"),
+        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Mr Luke", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754753739/chat_media/3dlog.jpg","They will be a make up cat","3:40pm"),
+        )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat2, container, false)
+
+        binding = FragmentChatBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getUserchats()
+        observeUserChats()
+
+    }
+
+    private fun observeChats() {
+
+        binding.chatRecyclerView.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        binding.chatRecyclerView.adapter = ChatAdapter(chatList) { chat ->
+            findNavController().navigate(R.id.messageFragment)
+
+        }
+
+
+    }
+    private fun observeUserChats(){
+        viewModel.chats.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    val chats = response.data?.chats?: emptyList()
+                    Log.d("chatLog", "${chats}")
+
+                    binding.chatRecyclerView.layoutManager = LinearLayoutManager(
+                        requireContext(),
+                        LinearLayoutManager.VERTICAL,
+                        false
+                    )
+                    val adapter = binding.chatRecyclerView.adapter as? ChatAdapter
+
+                    if (adapter == null) {
+                        binding.chatRecyclerView.adapter = ChatAdapter(chats) { chat ->
+                            val bundle = bundleOf("chat" to chat)
+                            findNavController().navigate(R.id.messageFragment,bundle)
+                        }
+                    } else {
+                        adapter.updateAdapter(chats)
+                    }
                 }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
+                    Log.d("error", "${response.message}")
+                }
+                is Resource.Loading -> {
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                    Log.d("loading", "Loading")
+                }
+                else -> {}
             }
+        }
     }
 }

@@ -7,11 +7,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.tukcompass.models.ClubSportReq
 import com.project.tukcompass.models.ClubSportResponse
 
 import com.project.tukcompass.models.CommentReqData
 import com.project.tukcompass.models.CommentRequest
 import com.project.tukcompass.models.CommentResponse
+import com.project.tukcompass.models.EnrollmentStatus
 import com.project.tukcompass.models.PostResponse
 import com.project.tukcompass.repositories.ClubRepo
 import com.project.tukcompass.utills.Resource
@@ -33,9 +35,15 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
     private var _posts = MutableLiveData<Resource<PostResponse>>()
     val posts: LiveData<Resource<PostResponse>> = _posts
 
+    private val _postCreated = MutableLiveData<Boolean>()
+    val postCreated: LiveData<Boolean> get() = _postCreated
+
 
     private var _comments = MutableLiveData<Resource<CommentResponse>>()
     val comment: LiveData<Resource<CommentResponse>> = _comments
+
+    private var _enrolmentStatus = MutableLiveData<Resource<EnrollmentStatus>>()
+    val enrollmentStatus: LiveData<Resource<EnrollmentStatus>> = _enrolmentStatus
 
 
 
@@ -52,6 +60,14 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
             _myClubSports.value = Resource.Loading
             val response = repo.getMyClubs()
             _myClubSports.postValue(response)
+        }
+    }
+
+    fun enrollClubSport(clubSportID: ClubSportReq){
+        viewModelScope.launch {
+            _enrolmentStatus.value = Resource.Loading
+            val response = repo.enrollClubSport(clubSportID)
+            _enrolmentStatus.postValue(response)
         }
     }
 
@@ -72,15 +88,18 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
                 val result = repo.createPost(description, clubID, imageUri,context)
                 when (result) {
                     is Resource.Success -> {
-                        getPosts(clubID) // reload posts
+                        getPosts(clubID) // reload
+                        _postCreated.value = true
                     }
                     is Resource.Error -> {
                         Log.d("error", result.message)
+                        _postCreated.value = false
                     }
                     else -> {}
                 }
             } catch (e: Exception) {
                 Log.e("AddComment", "Exception: ${e.message}")
+                _postCreated.value = false
             }
         }
     }

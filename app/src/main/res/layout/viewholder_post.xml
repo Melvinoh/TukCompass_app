@@ -12,7 +12,7 @@
         android:layout_margin="4dp"
         android:background="@drawable/white2_bg"
         android:orientation="vertical"
-        android:padding="8dp"
+        android:padding="2dp"
         android:weightSum="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,6 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_weight="1">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -79,11 +80,13 @@
             android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="10dp"
+
             android:layout_weight="1"
             android:text="Material Design is a design system built and supported by Google design. I just like getting their ass kicked by this unbeatable beast" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -91,19 +94,24 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/postImage"
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/tuk_2" />
+                android:src="@drawable/tuk_2"
+                app:layout_constraintDimensionRatio="3:2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginVertical="20dp"
             android:layout_weight="1"
+            android:layout_marginHorizontal="10dp"
             android:orientation="horizontal"
             android:paddingHorizontal="4dp">
 
@@ -127,6 +135,7 @@
                     android:id="@+id/likesTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="0 likes" />
             </LinearLayout>
 
@@ -151,6 +160,7 @@
                     android:id="@+id/commentsTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="5 comments" />
             </LinearLayout>
 
@@ -173,6 +183,7 @@
                     android:id="@+id/sharesTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text=" 0 shares" />
             </LinearLayout>
 

@@ -19,8 +19,9 @@ import com.project.tukcompass.models.ScheduleBlock
 import com.project.tukcompass.utills.Resource
 import com.project.tukcompass.viewModels.AcademicsViewHolder
 import com.project.tukcompass.viewModels.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
-
+@AndroidEntryPoint
 class UnitRegistrationFragment : Fragment() {
 
     private lateinit var binding: FragmentUnitRegistrationBinding

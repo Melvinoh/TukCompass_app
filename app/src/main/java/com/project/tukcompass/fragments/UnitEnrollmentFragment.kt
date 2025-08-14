@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.project.tukcompass.R
 import com.project.tukcompass.databinding.FragmentUnitEnrollmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UnitEnrollmentFragment : Fragment() {
 
     private  lateinit var binding: FragmentUnitEnrollmentBinding
@@ -27,6 +29,7 @@ class UnitEnrollmentFragment : Fragment() {
             false
         )
         return binding.root
+
     }
 
 }

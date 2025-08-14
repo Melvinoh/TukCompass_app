@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.tukcompass.databinding.ViewholderTimtableCellBinding
 import com.project.tukcompass.databinding.ViewholderUnitsBinding
+import com.project.tukcompass.models.ClubSportModel
 import com.project.tukcompass.models.SessionDisplayItem
 import com.project.tukcompass.models.SessionTable
 
 class UpComingClassAdapter(
-    private var sessions: List<SessionDisplayItem>
+    private var sessions: List<SessionDisplayItem>,
+    private val onItemClick: (SessionDisplayItem) -> Unit
 ) : RecyclerView.Adapter<UpComingClassAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ViewholderUnitsBinding) :
@@ -34,6 +36,9 @@ class UpComingClassAdapter(
         holder.binding.unitName.text = session?.unitName ?: ""
         holder.binding.locationTxt.text = session?.mode ?: ""
         holder.binding.timeTxt.text = session?.lecturerName ?: ""
+        holder.binding.root.setOnClickListener {
+            onItemClick(session)
+        }
     }
 
     override fun getItemCount(): Int = sessions.size

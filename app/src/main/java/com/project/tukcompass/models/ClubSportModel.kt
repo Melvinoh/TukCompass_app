@@ -19,3 +19,13 @@ data class ClubSportResponse(
     val clubSports: List<ClubSportModel>,
     val message: String
 ) : Parcelable
+
+
+data class ClubSportReq(
+    val clubSportID: String,
+)
+
+
+data class EnrollmentStatus(
+    val message: String,
+)

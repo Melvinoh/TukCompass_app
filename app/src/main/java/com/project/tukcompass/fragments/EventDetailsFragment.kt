@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.tukcompass.R
 import com.project.tukcompass.databinding.FragmentEventDetailsBinding
@@ -42,6 +43,10 @@ class EventDetailsFragment : Fragment() {
         binding.timeTxt.text = event.time
         binding.dateTxt.text = event.date
         binding.descriptionTxt.text = event.description
+
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         Glide.with(requireContext())
             .load(event.fileUrl)

@@ -19,9 +19,10 @@ import com.project.tukcompass.databinding.FragmentAllClubSportBinding
 import com.project.tukcompass.utills.Resource
 import com.project.tukcompass.viewModels.ClubViewModel
 import com.project.tukcompass.viewModels.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
-
+@AndroidEntryPoint
 class AllClubSportFragment : Fragment() {
 
     private val viewModel: ClubViewModel by viewModels()
@@ -31,7 +32,6 @@ class AllClubSportFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,8 +54,7 @@ class AllClubSportFragment : Fragment() {
         observeClubsSport()
 
     }
-
-    private fun observeMyClubSport(){
+    private fun observeMyClubSport() {
         viewModel.myClubSports.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
@@ -64,44 +63,52 @@ class AllClubSportFragment : Fragment() {
                     val clubs = myClubSports.filter { it.type == "clubs" }
                     val sports = myClubSports.filter { it.type == "sports" }
 
+                    // Setup clubs RecyclerView
                     binding.clubRv.layoutManager = LinearLayoutManager(
                         requireContext(),
                         LinearLayoutManager.HORIZONTAL,
                         false
                     )
-                    val sportsAdapter = binding.sportsRv.adapter as? MyClubSportAdapter
-                    val clubsAdapter = binding.clubRv.adapter as MyClubSportAdapter
-                    if (sportsAdapter == null) {
-                        binding.sportsRv.adapter = MyClubSportAdapter(clubs) { clubSport ->
+                    val currentClubsAdapter = binding.clubRv.adapter as? MyClubSportAdapter
+                    if (currentClubsAdapter == null) {
+                        binding.clubRv.adapter = MyClubSportAdapter(clubs) { clubSport ->
                             val bundle = bundleOf("club" to clubSport)
-                            findNavController().navigate(R.id.clubsFragment,bundle)
+                            findNavController().navigate(R.id.clubsFragment, bundle)
                         }
                     } else {
-                        sportsAdapter.updateGroups(myClubSports)
+                        currentClubsAdapter.updateGroups(clubs)
                     }
-                    if (clubsAdapter == null) {
-                        binding.clubRv.adapter = MyClubSportAdapter(sports) { clubSport ->
+
+                    // Setup sports RecyclerView
+                    binding.sportsRv.layoutManager = LinearLayoutManager(
+                        requireContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+                    val currentSportsAdapter = binding.sportsRv.adapter as? MyClubSportAdapter
+                    if (currentSportsAdapter == null) {
+                        binding.sportsRv.adapter = MyClubSportAdapter(sports) { clubSport ->
                             val bundle = bundleOf("club" to clubSport)
-                            findNavController().navigate(R.id.clubsFragment,bundle)
+                            findNavController().navigate(R.id.clubsFragment, bundle)
                         }
                     } else {
-                        clubsAdapter.updateGroups(myClubSports)
+                        currentSportsAdapter.updateGroups(sports)
                     }
                 }
+
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                    Log.d("error", "${response.message}")
+                    Log.e("ClubSportError", "${response.message}")
+                }
 
-                }
                 is Resource.Loading -> {
-                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
-                    Log.d("loading", "Loading")
+                    Log.d("ClubSportLoading", "Loading...")
                 }
-                else -> {}
+
+                else -> Unit
             }
         }
     }
-
     private fun observeClubsSport(){
         viewModel.clubSports.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -109,19 +116,16 @@ class AllClubSportFragment : Fragment() {
                     val clubSports = response.data?.clubSports ?: emptyList()
                     Log.d("clubLog", "${clubSports}")
 
-
-
                     binding.allClubSportRv.layoutManager = GridLayoutManager(
                         requireContext(),
                         3
                     )
-
                     val adapter = binding.allClubSportRv.adapter as? MyGroupAdapter
 
                     if (adapter == null) {
                         binding.allClubSportRv.adapter = MyGroupAdapter(clubSports) { clubSport ->
                             val bundle = bundleOf("club" to clubSport)
-                            findNavController().navigate(R.id.clubsFragment,bundle)
+                            findNavController().navigate(R.id.clubSportEnrollment,bundle)
                         }
                     } else {
                         adapter.updateGroups(clubSports)
@@ -140,6 +144,5 @@ class AllClubSportFragment : Fragment() {
             }
         }
     }
-
 }
 

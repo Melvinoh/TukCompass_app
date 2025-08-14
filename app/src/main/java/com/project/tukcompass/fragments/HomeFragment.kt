@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
     private lateinit var sharedPrefManager: EncryptedSharedPrefManager
 
     val categoryList = listOf(
-        CategoryModel("Syllabus", R.drawable.curriculum),
+        CategoryModel("add event", R.drawable.plus),
         CategoryModel("past papers", R.drawable.test),
         CategoryModel("Clubs", R.drawable.clubs),
         CategoryModel("Academics", R.drawable.sylabus),
@@ -57,8 +57,26 @@ class HomeFragment : Fragment() {
 
         binding.userName.text = user?.fname
 
+        val userRole = user?.role
+
         Log.d("userLog", "${user}")
         Log.d("tokenLog", "${token}")
+
+        val updatedCategoryList = categoryList.toMutableList()
+
+        if ( userRole == "lecturer") {
+
+            val index = updatedCategoryList.indexOfFirst { it.title.equals("Syllabus", ignoreCase = true) }
+            if (index != -1) {
+                updatedCategoryList[index] = CategoryModel("Add Event", R.drawable.add) // replace icon & title
+            }
+            val pastPapersIndex = updatedCategoryList.indexOfFirst { it.title.equals("past papers", ignoreCase = true) }
+            if (pastPapersIndex != -1) {
+                updatedCategoryList[pastPapersIndex] = CategoryModel("Unit Registration", R.drawable.test)
+            }
+        }
+
+
 
         binding.allEvents.setOnClickListener {
 
@@ -82,6 +100,16 @@ class HomeFragment : Fragment() {
             val fragment = EventsFragment()
             displayFragment(fragment)
         }
+        binding.viewGroups.setOnClickListener {
+            findNavController().navigate(R.id.allClubSports)
+        }
+
+
+
+
+
+
+
     }
     private fun observeCategories() {
 
@@ -93,12 +121,17 @@ class HomeFragment : Fragment() {
         binding.viewCategory.adapter = CategoryAdapter(categoryList) { category ->
 
             when (category.title) {
-                "Syllabus" -> findNavController().navigate(R.id.unitDetailsFragment)
+                "add event" -> findNavController().navigate(R.id.eventRegistration)
                 "past papers" -> findNavController().navigate(R.id.unitEnrolmentFragment)
                 "Clubs" -> findNavController().navigate(R.id.allClubSports)
                 "Academics" -> findNavController().navigate(R.id.unitRegistrationFragment,)
                 "My connects" -> displayFragment(ChatFragment())
                 "My units" -> findNavController().navigate(R.id.unitContentFragment)
+
+
+                "Add Event" -> findNavController().navigate(R.id.eventRegistration)
+                "unit Registration" -> findNavController().navigate(R.id.unitRegistrationFragment)
+
                 else -> Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
             }
 
@@ -188,8 +221,6 @@ class HomeFragment : Fragment() {
                 is Resource.Success -> {
                     val clubSports = response.data?.clubSports ?: emptyList()
                     Log.d("clubLog", "${clubSports}")
-
-
 
                     binding.viewGroups.layoutManager = GridLayoutManager(
                         requireContext(),

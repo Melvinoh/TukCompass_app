@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.project.tukcompass.R
 import com.project.tukcompass.adapters.CommentsAdapter
@@ -45,6 +46,10 @@ class ClubFragment : Fragment() {
 
     override  fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
 
         club = requireArguments().getParcelable<ClubSportModel>("club")!!
         clubId = club.clubSportsID
@@ -58,6 +63,21 @@ class ClubFragment : Fragment() {
         val headerContainer = binding.headerContainer
         val tabContainer = binding.tabContainer
 
+
+        Glide.with(requireContext())
+            .load(club.coverURL)
+            .into(binding.headerImage)
+        Glide.with(requireContext())
+            .load(club.profileURL)
+            .into(binding.avatarImage)
+        Glide.with(requireContext())
+            .load(club.profileURL)
+            .into(binding.avatarTab)
+
+        binding.titleText.text = club.name
+        binding.titleTab.text = club.name
+
+
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBar, verticalOffset ->
             val totalScroll = appBar.totalScrollRange.toFloat()
             val currentScroll = -verticalOffset.toFloat()
@@ -66,11 +86,11 @@ class ClubFragment : Fragment() {
             headerImage.alpha = 1f - collapseRatio
             tabContainer.alpha = collapseRatio
 
-            val scale = 1f - (collapseRatio * 0.2f) // scale from 1 to 0.7
+            val scale = 1f - (collapseRatio * 0.2f)
             headerContainer.scaleX = scale
             headerContainer.scaleY = scale
 
-            val translationY = -collapseRatio * 300 // adjust value to fit toolbar height
+            val translationY = -collapseRatio * 300
             headerContainer.translationY = translationY
         })
 

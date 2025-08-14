@@ -29,10 +29,18 @@
         android:id="@+id/eventsDetailsFragment"
         android:name="com.project.tukcompass.fragments.EventDetailsFragment"
         android:label="event" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.project.tukcompass.fragments.EditProfileFragment"
+        android:label="event" />
 
     <fragment
         android:id="@+id/eventsFragment"
         android:name="com.project.tukcompass.fragments.EventsFragment"
+        android:label="event" />
+    <fragment
+        android:id="@+id/eventRegistration"
+        android:name="com.project.tukcompass.fragments.EventRegistrationFragment"
         android:label="event" />
     <fragment
         android:id="@+id/clubsFragment"
@@ -64,5 +72,13 @@
         android:name="com.project.tukcompass.fragments.ClubSportEnrolment"
         android:label="unitRegitration" />
 
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.project.tukcompass.fragments.ChatFragment"
+        android:label="unitRegitration" />
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.project.tukcompass.fragments.ChatFragment"
+        android:label="unitRegitration" />
 
 </navigation>

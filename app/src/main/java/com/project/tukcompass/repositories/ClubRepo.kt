@@ -5,10 +5,12 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import com.project.tukcompass.Api
+import com.project.tukcompass.models.ClubSportReq
 import com.project.tukcompass.models.ClubSportResponse
 import com.project.tukcompass.models.CommentReqData
 import com.project.tukcompass.models.CommentRequest
 import com.project.tukcompass.models.CommentResponse
+import com.project.tukcompass.models.EnrollmentStatus
 import com.project.tukcompass.models.PostResponse
 import com.project.tukcompass.utills.Resource
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -101,6 +103,31 @@ class ClubRepo @Inject constructor(private val api: Api) {
         return try {
             val response = api.addComment(reqBody)
             if (response.isSuccessful) {
+                val body = response.body()
+
+                Log.d("ClubAPI", "Response Body: ${response.body()}")
+                if (body != null) {
+                    Resource.Success(body)
+
+                } else {
+                    Resource.Error("Response body is null")
+                }
+            } else {
+                Resource.Error("Request failed with code ${response.code()}")
+            }
+        }catch (e: IOException) {
+            Log.e("NetworkError", e.localizedMessage ?: "IO Error")
+            Resource.Error("Network Error: ${e.localizedMessage}")
+        }
+    }
+
+
+    suspend fun enrollClubSport( clubSportID : ClubSportReq): Resource<EnrollmentStatus>{
+
+        return try {
+            val response = api.enrollClubSport(clubSportID)
+            if (response.isSuccessful) {
+
                 val body = response.body()
 
                 Log.d("ClubAPI", "Response Body: ${response.body()}")

@@ -8,6 +8,7 @@ import com.project.tukcompass.models.LoginModels
 import com.project.tukcompass.models.LoginResModel
 import com.project.tukcompass.models.SignupReqModel
 import com.project.tukcompass.models.SignupResModel
+import com.project.tukcompass.models.UserModel
 import com.project.tukcompass.repositories.AuthRepo
 import com.project.tukcompass.utills.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel() {
+
+
     private val _signupResponse = MutableLiveData<Resource<SignupResModel>>()
     val signupResponse: LiveData<Resource<SignupResModel>> = _signupResponse
     private val _loginResponse = MutableLiveData<Resource<LoginResModel>>()
     val loginResponse: LiveData<Resource<LoginResModel>> = _loginResponse
+    private val _userProfile = MutableLiveData<MutableList<UserModel?>>()
+    val userProfile: MutableLiveData<MutableList<UserModel?>> = _userProfile
 
     fun login(reqBody: LoginModels) {
         viewModelScope.launch{

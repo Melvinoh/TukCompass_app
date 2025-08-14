@@ -45,6 +45,11 @@ class EventsFragment : Fragment() {
 
         viewModel.getEvents()
         observeUpcomingEvents()
+
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
     }
 
     private fun observeUpcomingEvents() {

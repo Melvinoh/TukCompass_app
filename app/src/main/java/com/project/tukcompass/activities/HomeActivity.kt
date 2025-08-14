@@ -37,6 +37,10 @@ class HomeActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.eventsDetailsFragment,
                 R.id.clubsFragment,
+                R.id.unitContentFragment,
+                R.id.unitDetailsFragment,
+                R.id.clubSportEnrollment,
+                R.id.messageFragment,
                 R.id.eventsFragment -> {
                     binding.bottomNavigation.visibility = View.GONE
                 }

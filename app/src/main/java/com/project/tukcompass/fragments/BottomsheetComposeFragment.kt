@@ -57,6 +57,13 @@ class BottomSheetComposeFragment : BottomSheetDialogFragment() {
 
             viewModel.createPost(description,clubId, selectedImageUri,requireContext())
         }
+        viewModel.postCreated.observe(viewLifecycleOwner) { created ->
+            if (created) {
+                dismiss()
+            }
+        }
+
+
     }
     companion object {
         fun newInstance(clubId: String): BottomSheetComposeFragment {

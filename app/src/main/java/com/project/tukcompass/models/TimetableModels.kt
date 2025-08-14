@@ -1,7 +1,9 @@
 package com.project.tukcompass.models
 
 import android.R
+import android.os.Parcelable
 import android.se.omapi.Session
+import kotlinx.parcelize.Parcelize
 
 data class TimeSlots (
     val startTime: String,
@@ -12,6 +14,8 @@ data class TimeSlots (
 )
 data class  SessionTable(
     val unitName:String?,
+    val unitID:String?,
+    val unitOfferingID:String?,
     val lecturerName: String?,
     val mode: String?
 
@@ -19,11 +23,13 @@ data class  SessionTable(
 data class  TimetableResponse(
     val timetable: List<TimeSlots>
 )
-
+@Parcelize
 data class SessionDisplayItem(
     val unitName: String,
+    val unitID: String,
+    val unitOfferingID: String,
     val lecturerName: String,
     val mode: String,
     val startTime: String,
     val endTime: String
-)
+) : Parcelable
