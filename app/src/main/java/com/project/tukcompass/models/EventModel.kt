@@ -12,13 +12,13 @@ data class EventModel(
     val title: String,
     val description: String,
     val location : String,
-    val date: String,
+    val date: String? = "",
     val expiryDate: String?,
     val time: String,
-    val targetGroup: String,
-    val fileUrl : String,
-    val createdBy : String,
-    val createdAt : String
+    val targetGroup: String? = "general",
+    val fileUrl : String?,
+    val createdBy : String?,
+    val createdAt : String?
 ) : Parcelable
 @Parcelize
 data class  EventResponse(
