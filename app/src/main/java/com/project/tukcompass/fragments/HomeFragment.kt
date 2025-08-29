@@ -103,16 +103,10 @@ class HomeFragment : Fragment() {
         binding.viewGroups.setOnClickListener {
             findNavController().navigate(R.id.allClubSports)
         }
-
-
-
-
-
-
-
     }
+    
     private fun observeCategories() {
-
+        
         binding.viewCategory.layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.HORIZONTAL,
