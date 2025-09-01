@@ -36,13 +36,19 @@ class EventDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        event = arguments?.getParcelable("event")!!
+        event = arguments?.getParcelable("event") ?: EventModel()
 
-        binding.titleTxt.text = event.title
-        binding.locationTxt.text = event.location
-        binding.timeTxt.text = event.time
-        binding.dateTxt.text = event.date
-        binding.descriptionTxt.text = event.description
+        event?.let{
+            
+            binding.titleTxt.text = event.title
+            binding.locationTxt.text = event.location
+            binding.timeTxt.text = event.time
+            binding.dateTxt.text = event.date
+            binding.descriptionTxt.text = event.description
+
+        } :? run {
+            Toast.make(requireContext(),"Event not Found",Toast.LENGTH_SHORT).show()
+        }
 
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
@@ -52,6 +58,12 @@ class EventDetailsFragment : Fragment() {
             .load(event.fileUrl)
             .into(binding.imgView)
 
+    }
+
+    companion object {
+        fun newInstance(event: EventModel) = EventDetailsFragment().apply{
+            arguments = bundleOf("event" to event)
+        }
     }
 
 
