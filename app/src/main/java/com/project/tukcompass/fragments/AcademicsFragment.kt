@@ -52,13 +52,9 @@ class AcademicsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.getStudentsTimetable()
-
         observeUpcomingClass()
-
         observeTimetable()
-
     }
 
     private fun observeTimetable(){
@@ -100,8 +96,6 @@ class AcademicsFragment : Fragment() {
                 is Resource.Success -> {
                     val timetable = response.data.timetable ?: emptyList()
                     Log.d("timetable log ", "$timetable")
-
-
                     val currentDay = getCurrentDay()
                     val todaySessions = timetable.mapNotNull { slot ->
                         val session = slot.sessions[currentDay]
