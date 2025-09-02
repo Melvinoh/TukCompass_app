@@ -29,23 +29,20 @@ class UnitContentAdapter(
         fun bind(item: ContentItem) {
             binding.fileName.text = item.title
             binding.fileTitle.text = item.title
-
             binding.downloadBtn.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
+                lifecycleScope.launch {
                     try {
-                        val file = downloadPdf(item.url, item.title)
-                        val pageCount = getPdfPageCount(file)
+                        val file = withContext(Dispatcher.IO){
+                            downloadPdf(item.url, item.title)
+                        }
+                        val pageCount = withContext(Dispatcher.IO){
+                            getPdfPageCount(file)
+                        }
                         binding.pageCount.text = "$pageCount pages"
-
-                        withContext(Dispatchers.Main) {
-                            val file = downloadPdf(item.url, item.title)
-                            openPdfExternally(file)
-                        }
-
+                        openPdfExternally(File)
+        
                     } catch (e: Exception) {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(binding.root.context, "Failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
+                        Toast.makeText(binding.root.context, "Failed: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -57,22 +54,24 @@ class UnitContentAdapter(
             val request = Request.Builder().url(url).build()
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) throw Exception("Download failed")
-
+    
             val file = File(
                 binding.root.context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
                 "$title.pdf"
             )
-            response.body?.byteStream()?.use { input ->
-                file.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            }
-            return file
+           val inputStream = response.body?.byteStream()
+           val outputStream = FileOutputStream(file)
+           inputStream?.copyTo(outputStream)
+            outputStream.close()
+            inputStream?.close()
+            
+           return file 
+        
         }
 
         private fun getPdfPageCount(file: File): Int {
-            val pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
-            val renderer = PdfRenderer(pfd)
+            val fileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+            val renderer = PdfRenderer(fileDescriptor)
             val count = renderer.pageCount
             renderer.close()
             pfd.close()
@@ -80,11 +79,11 @@ class UnitContentAdapter(
         }
 
         private fun renderFirstPage(file: File): Bitmap? {
-            val pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
-            val renderer = PdfRenderer(pfd)
+            val fileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+            val renderer = PdfRenderer(fileDescriptor)
             val page = renderer.openPage(0)
 
-            val bitmap = createBitmap(page.width, page.height)
+            val bitmap = createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
             page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
 
             page.close()
