@@ -59,12 +59,8 @@ class UnitContentViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         viewModel.getContent(unitDetails.unitOfferingID)
-
         observeContent()
-
     }
 
   companion object {
@@ -83,9 +79,7 @@ class UnitContentViewFragment : Fragment() {
 
             when (response) {
                 is Resource.Success -> {
-
                     val allContent = response.data.content
-
                     val content = when (type){
                         "pdf" -> allContent.pdf
                         "assignment" -> allContent.assignment
@@ -93,44 +87,28 @@ class UnitContentViewFragment : Fragment() {
                         "link" -> allContent.link
                         else -> emptyList()
                     }
-
-
-                    binding.recyclerView.layoutManager = LinearLayoutManager(
-                        requireContext(),
-                        LinearLayoutManager.VERTICAL,
-                        false
-                    )
-                    if(type === "pdf"){
-
+                    if(type === "pdf" || type === "link"){
+                        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                         val adapter = binding.recyclerView.adapter as? UnitContentAdapter
                         if (adapter == null) {
                             binding.recyclerView.adapter = UnitContentAdapter(content)
                         } else {
                             adapter.updateAdapter(content)
                         }
-
-                    }else{
+                    }
+                    if (type === "assignment" || type === "video"){
+                        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
                         val adapter = binding.recyclerView.adapter as? MediaAdapter
                         if (adapter == null) {
-                            binding.recyclerView.adapter = MediaAdapter(content){ media ->
-
-
-                            }
+                            binding.recyclerView.adapter = MediaAdapter(content)
                         } else {
                             adapter.updateAdapter(content)
                         }
-                    }
-                    val adapter = binding.recyclerView.adapter as? UnitContentAdapter
-                    if (adapter == null) {
-                        binding.recyclerView.adapter = UnitContentAdapter(content)
-                    } else {
-                        adapter.updateAdapter(content)
                     }
                 }
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
                     Log.d("error", "${response.message}")
-
                 }
                 is Resource.Loading -> {
                     Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
