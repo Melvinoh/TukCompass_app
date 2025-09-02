@@ -25,11 +25,11 @@ data class  TimetableResponse(
 )
 @Parcelize
 data class SessionDisplayItem(
-    val unitName: String,
-    val unitID: String,
-    val unitOfferingID: String,
-    val lecturerName: String,
-    val mode: String,
-    val startTime: String,
-    val endTime: String
+    val unitName: String?,
+    val unitID: String?,
+    val unitOfferingID: String?,
+    val lecturerName: String?,
+    val mode: String?,
+    val startTime: String?,
+    val endTime: String?
 ) : Parcelable
