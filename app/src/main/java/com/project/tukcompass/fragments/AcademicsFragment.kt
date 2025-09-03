@@ -111,6 +111,12 @@ class AcademicsFragment : Fragment() {
                             )
                         }
                     }
+                    if(!todaySession){
+Toast.make(requireContext, "you do not have classes today enjoy", Toast.LENGTH_SHORT).show()
+
+                    }
+
+
 
                     binding.upcomingViewholder.layoutManager = LinearLayoutManager(
                         requireContext(),
