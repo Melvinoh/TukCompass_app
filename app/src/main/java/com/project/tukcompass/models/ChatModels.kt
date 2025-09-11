@@ -33,3 +33,10 @@ data class  MessageModel(
     val senderName: String = "",
     val createdAt : String = ""
 )
+
+data class sendMessage(
+    val receiverID: String = "",
+    val message: String = "",
+    val messageUrl : String = "",
+    val mediaType: String = "",
+)
