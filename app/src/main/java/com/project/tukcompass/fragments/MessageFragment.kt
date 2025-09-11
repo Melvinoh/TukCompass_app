@@ -43,7 +43,7 @@ class MessageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chatInfo = arguments?.getParcelable("chat")!!
+        chatInfo = arguments?.getParcelable("chat") ?: emptyList()
 
         binding.nameTxt.text = chatInfo.receiverName
 
@@ -55,9 +55,11 @@ class MessageFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-
-
-
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            vm.messages.collect { list ->
+                // submit list to RecyclerView adapter
+            }
+        }
     }
 
 
