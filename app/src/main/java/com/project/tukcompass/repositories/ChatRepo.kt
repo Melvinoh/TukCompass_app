@@ -10,9 +10,10 @@ import com.project.tukcompass.utills.Resource
 import java.io.IOException
 import javax.inject.Inject
 
-class ChatRepo @Inject constructor(private val api: Api) {
+class ChatRepo @Inject constructor(private val api: Api, private val socketManager: SocketManager) {
 
-
+    val incomingMessages: SharedFlow<IncomingMessage> = socketManager.incomingMessages
+    val connected: StateFlow<Boolean> = socketManager.connected
 
     suspend fun getUserChats(): Resource<ChatResponse> {
         return try {
@@ -57,5 +58,19 @@ class ChatRepo @Inject constructor(private val api: Api) {
             Resource.Error("Network Error: ${e.localizedMessage}")
         }
     }
+    fun connectSocket(serverUrl: String, token: String) {
+        socketManager.connect(serverUrl, token)
+    }
+     fun disconnectSocket() {
+        socketManager.disconnect()
+    }
+     fun joinChat(chatId: String) = socketManager.joinChat(chatId)
+
+     fun sendMessage(msg: OutgoingMessage) = socketManager.sendMessage(msg)
+
+    
+   
+
+    
 
 }
