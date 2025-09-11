@@ -25,23 +25,11 @@ import kotlin.getValue
 class ChatFragment : Fragment() {
 
     private lateinit var binding: FragmentChatBinding
+    private lateinit var sharedPrefManager: EncryptedSharedPrefManager
     private val viewModel: ChatsViewModel by viewModels()
 
-    val chatList = listOf(
-
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Muturi melvin", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754753739/chat_media/3dlog.jpg","hey there am using whatsapp","3:40pm"),
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Boyani Beverly", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410594/TukCompass/download_1.jpg  ","have you finished your project?","3:40pm"),
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","omwami joshua", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754411336/TukCompass/download_2.png","zz cdtahi nitakuwa available","3:40pm"),
-
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Lucy Abwodtha", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410961/TukCompass/download_4.jpg","kindly submmit your assignment on time","3:40pm"),
-
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","milly Kagweru", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410148/TukCompass/dance_baner","is the trip to mombasa confirmed ","3:40pm"),
-
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Eunice Njeri", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410961/TukCompass/download_4.jpg","i feel like crying","3:40pm"),
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Dr Edwin", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754410414/TukCompass/3D-4.jpg ","Kindly present your work by tommorow","3:40pm"),
-        ChatModel("78f28743-918c-43c9-832a-4a60451521fb","Mr Luke", "\"https://res.cloudinary.com/dkc2oujm6/image/upload/v1754753739/chat_media/3dlog.jpg","They will be a make up cat","3:40pm"),
-        )
-
+    private val serverUrl = "http://10.0.2.2:3000" 
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,25 +53,20 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedPrefManager = EncryptedSharedPrefManager(requireContext())
+
+        val token = sharedPrefManager.getToken()
+
+        if (token.isNotEmpty()) {
+            viewModel.connectWithExistingToken(serverUrl, token)
+        }
+
         viewModel.getUserchats()
         observeUserChats()
 
     }
 
-    private fun observeChats() {
-
-        binding.chatRecyclerView.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        binding.chatRecyclerView.adapter = ChatAdapter(chatList) { chat ->
-            findNavController().navigate(R.id.messageFragment)
-
-        }
-
-
-    }
+   
     private fun observeUserChats(){
         viewModel.chats.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -100,6 +83,12 @@ class ChatFragment : Fragment() {
 
                     if (adapter == null) {
                         binding.chatRecyclerView.adapter = ChatAdapter(chats) { chat ->
+
+                            lifecycleScope.launchWhenStarted {
+                                viewModel.connected.collect { isConnected ->
+                                    if (isConnected) viewModel.joinChat(chat.chatID)
+                                }
+                            }
                             val bundle = bundleOf("chat" to chat)
                             findNavController().navigate(R.id.messageFragment,bundle)
                         }
