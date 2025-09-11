@@ -32,21 +32,20 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
     private var _myClubSports = MutableLiveData<Resource<ClubSportResponse>>()
     val myClubSports: LiveData<Resource<ClubSportResponse>> = _myClubSports
 
-    private var _posts = MutableLiveData<Resource<PostResponse>>()
-    val posts: LiveData<Resource<PostResponse>> = _posts
-
-    private val _postCreated = MutableLiveData<Boolean>()
-    val postCreated: LiveData<Boolean> get() = _postCreated
-
-
-    private var _comments = MutableLiveData<Resource<CommentResponse>>()
-    val comment: LiveData<Resource<CommentResponse>> = _comments
-
     private var _enrolmentStatus = MutableLiveData<Resource<EnrollmentStatus>>()
     val enrollmentStatus: LiveData<Resource<EnrollmentStatus>> = _enrolmentStatus
 
+    private var _posts = MutableStateFlow<Resource<PostResponse>>()
+    val posts: StateFlow<Resource<PostResponse>> = _posts
+
+    private val _postCreated = MutableLiveData<Boolean>()
+    val postCreated: LiveData<Boolean> get() = _postCreated
+    
+    private var _comments = MutableLiveData<Resource<CommentResponse>>()
+    val comment: LiveData<Resource<CommentResponse>> = _comments
 
 
+//fetch clubs and sports
     fun getClubSport(){
         viewModelScope.launch {
             _clubSports.value = Resource.Loading
@@ -55,6 +54,7 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
         }
     }
 
+    //get clubs and sport am registered in 
     fun getMyClubs(){
         viewModelScope.launch {
             _myClubSports.value = Resource.Loading
@@ -62,6 +62,8 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
             _myClubSports.postValue(response)
         }
     }
+
+    //enrole in club and sport 
 
     fun enrollClubSport(clubSportID: ClubSportReq){
         viewModelScope.launch {
@@ -71,7 +73,7 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
         }
     }
 
-
+//fetch clubs and sports post events
     fun getPosts(id: String) {
 
         Log.d("clubID vm", "$id")
@@ -81,6 +83,8 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
             _posts.postValue(response)
         }
     }
+
+//create  posts for a specific club and sports 
     fun createPost(description: String, clubID: String, imageUri: Uri?, context: Context) {
         viewModelScope.launch {
            _posts.value = Resource.Loading
