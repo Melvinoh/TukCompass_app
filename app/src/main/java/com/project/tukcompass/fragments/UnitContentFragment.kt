@@ -63,7 +63,6 @@ class UnitContentFragment : Fragment() {
         observeLecturers()
         observePastPapers()
 
-
     }
 
     private fun observePastPapers(){

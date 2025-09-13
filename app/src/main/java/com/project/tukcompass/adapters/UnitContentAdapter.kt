@@ -3,10 +3,10 @@ package com.project.tukcompass.adapters
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
-import android.net.Uri
 import android.os.Environment
 import android.os.ParcelFileDescriptor
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
@@ -17,10 +17,13 @@ import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
+import java.io.FileOutputStream
 import androidx.core.graphics.createBitmap
 
 class UnitContentAdapter(
-    private var unitContent: List<ContentItem>
+    private var unitContent: List<ContentItem>,
+    private val scope: CoroutineScope,
+    private val onPdfDownloaded: (File) -> Unit
 ) : RecyclerView.Adapter<UnitContentAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ViewholderPdfBinding) :
@@ -29,24 +32,42 @@ class UnitContentAdapter(
         fun bind(item: ContentItem) {
             binding.fileName.text = item.title
             binding.fileTitle.text = item.title
+
             binding.downloadBtn.setOnClickListener {
-                lifecycleScope.launch {
+                scope.launch {
                     try {
-                        val file = withContext(Dispatcher.IO){
-                            downloadPdf(item.url, item.title)
+
+                        binding.progressBar.visibility = View.VISIBLE
+                        val file = withContext(Dispatchers.IO) {
+                            val pdfFile = File(
+                                binding.root.context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+                                "${item.title}.pdf"
+                            )
+
+                            if (pdfFile.exists()) {
+                                pdfFile
+                            } else {
+                                downloadPdf(item.url, item.title)
+                            }
                         }
-                        val pageCount = withContext(Dispatcher.IO){
+                        onPdfDownloaded(file)
+
+                        val pageCount = withContext(Dispatchers.IO) {
                             getPdfPageCount(file)
                         }
                         binding.pageCount.text = "$pageCount pages"
-                        openPdfExternally(File)
-        
+
                     } catch (e: Exception) {
-                        Toast.makeText(binding.root.context, "Failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            binding.root.context,
+                            "Failed: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }finally {
+                        binding.progressBar.visibility = View.GONE
                     }
                 }
             }
-
         }
 
         private fun downloadPdf(url: String, title: String): File {
@@ -54,19 +75,19 @@ class UnitContentAdapter(
             val request = Request.Builder().url(url).build()
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) throw Exception("Download failed")
-    
+
             val file = File(
                 binding.root.context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
                 "$title.pdf"
             )
-           val inputStream = response.body?.byteStream()
-           val outputStream = FileOutputStream(file)
-           inputStream?.copyTo(outputStream)
-            outputStream.close()
-            inputStream?.close()
-            
-           return file 
-        
+
+            response.body?.byteStream().use { input ->
+                FileOutputStream(file).use { output ->
+                    input?.copyTo(output)
+                }
+            }
+
+            return file
         }
 
         private fun getPdfPageCount(file: File): Int {
@@ -74,7 +95,7 @@ class UnitContentAdapter(
             val renderer = PdfRenderer(fileDescriptor)
             val count = renderer.pageCount
             renderer.close()
-            pfd.close()
+            fileDescriptor.close()
             return count
         }
 
@@ -88,7 +109,7 @@ class UnitContentAdapter(
 
             page.close()
             renderer.close()
-            pfd.close()
+            fileDescriptor.close()
 
             return bitmap
         }

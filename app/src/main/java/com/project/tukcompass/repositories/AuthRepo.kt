@@ -2,6 +2,8 @@ package com.project.tukcompass.repositories
 
 import android.util.Log
 import com.project.tukcompass.Api
+import com.project.tukcompass.models.ChatResponse
+import com.project.tukcompass.models.ContactsRes
 import com.project.tukcompass.models.LoginModels
 import com.project.tukcompass.models.LoginResModel
 import com.project.tukcompass.models.SignupReqModel
@@ -56,6 +58,28 @@ class AuthRepo @Inject constructor(private val api: Api) {
         } catch (e: Exception) {
             Log.e("LoginGeneralError", e.localizedMessage ?: "General Error")
             Resource.Error("Conversion Error: ${e.localizedMessage}")
+        }
+    }
+
+    suspend fun getUserContacts(): Resource<ContactsRes> {
+        return try {
+            val response = api.getUserContacts()
+            Log.d("CONTACTS RESPONSE", "Response Code: ${response.code()}, Message: ${response.message()}")
+
+            if (response.isSuccessful) {
+                Log.d("Contacts", "Response Body: ${response.body()}")
+                response.body()?.let {
+                    Resource.Success(it)
+                } ?: Resource.Error("Response body is null")
+            } else {
+                Resource.Error("Request failed with code ${response.code()} - ${response.message()}")
+            }
+        } catch (e: IOException) {
+            Log.e("NetworkError", e.localizedMessage ?: "IO Error")
+            Resource.Error("Network Error: ${e.localizedMessage}")
+        } catch (e: Exception) {
+            Log.e("UnexpectedError", e.localizedMessage ?: "Unexpected Error")
+            Resource.Error("Unexpected Error: ${e.localizedMessage}")
         }
     }
 }

@@ -12,3 +12,21 @@ data class UserModels(
     val mobile: String,
     val profileUrl: String
 )
+
+data class ContactsModel(
+
+    val userID: String,
+    val fname: String,
+    val sname: String,
+    val email: String,
+    val mobile: String,
+    val profileUrl: String
+
+)
+
+data class ContactsRes(
+    val course: String,
+    val classmates: List<ContactsModel>,
+    val lecturer: List<ContactsModel>
+
+)

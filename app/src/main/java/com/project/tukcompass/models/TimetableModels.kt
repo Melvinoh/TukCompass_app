@@ -6,18 +6,18 @@ import android.se.omapi.Session
 import kotlinx.parcelize.Parcelize
 
 data class TimeSlots (
-    val startTime: String,
-    val endTime: String,
-    val key: String,
+    val startTime: String = "",
+    val endTime: String = "",
+    val key: String = "",
     val sessions: Map< String, SessionTable? >
 
 )
 data class  SessionTable(
-    val unitName:String?,
-    val unitID:String?,
-    val unitOfferingID:String?,
-    val lecturerName: String?,
-    val mode: String?
+    val unitName:String? = "",
+    val unitID:String? = "",
+    val unitOfferingID:String? = "",
+    val lecturerName: String? = "",
+    val mode: String? = ""
 
 )
 data class  TimetableResponse(
@@ -25,11 +25,11 @@ data class  TimetableResponse(
 )
 @Parcelize
 data class SessionDisplayItem(
-    val unitName: String?,
-    val unitID: String?,
-    val unitOfferingID: String?,
-    val lecturerName: String?,
-    val mode: String?,
-    val startTime: String?,
-    val endTime: String?
+    val unitName: String = "",
+    val unitID: String = "",
+    val unitOfferingID: String = "",
+    val lecturerName: String = "",
+    val mode: String = "",
+    val startTime: String = "",
+    val endTime: String = ""
 ) : Parcelable

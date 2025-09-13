@@ -35,8 +35,8 @@ class ClubViewModel  @Inject constructor(private val repo: ClubRepo) : ViewModel
     private var _enrolmentStatus = MutableLiveData<Resource<EnrollmentStatus>>()
     val enrollmentStatus: LiveData<Resource<EnrollmentStatus>> = _enrolmentStatus
 
-    private var _posts = MutableStateFlow<Resource<PostResponse>>()
-    val posts: StateFlow<Resource<PostResponse>> = _posts
+    private var _posts = MutableLiveData<Resource<PostResponse>>()
+    val posts: LiveData<Resource<PostResponse>> = _posts
 
     private val _postCreated = MutableLiveData<Boolean>()
     val postCreated: LiveData<Boolean> get() = _postCreated

@@ -49,12 +49,12 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.core)
     implementation(libs.androidx.room.common.jvm)
     testImplementation(libs.junit)
@@ -62,33 +62,39 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
+
+
     implementation(libs.androidx.activity.ktx)
+
+    implementation(libs.material)
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.kotlinx.coroutines.android)
     implementation (libs.androidx.security.crypto)
     implementation (libs.gson )
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
     implementation (libs.androidx.material.icons.extended)
     implementation(libs.circleimageview)
-    implementation (libs.material)
+    implementation(libs.shimmer)
+    implementation (libs.glide)
+    implementation(libs.android.pdf.viewer)
+    implementation(libs.okhttp)
+    implementation (libs.androidx.room.runtime)
+    kapt (libs.androidx.room.compiler)
 
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("com.google.code.gson:gson:2.11.0")
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    implementation("androidx.activity:activity-ktx:1.9.1")
-    implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation ("androidx.room:room-runtime:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation ("com.google.dagger:hilt-android:2.52")
-    kapt ("com.google.dagger:hilt-compiler:2.52")
-    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
+    implementation(libs.kotlinx.metadata.jvm)
+
+    implementation("io.socket:socket.io-client:2.1.0") {
+        exclude(group = "org.json", module = "json")
+    }
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.3")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
 
 

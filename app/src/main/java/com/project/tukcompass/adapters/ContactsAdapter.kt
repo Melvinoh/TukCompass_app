@@ -2,31 +2,28 @@ package com.project.tukcompass.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.project.tukcompass.databinding.VieholderCategoryBinding
 import com.project.tukcompass.databinding.ViewholderChatsBinding
-import com.project.tukcompass.models.CategoryModel
+import com.project.tukcompass.databinding.ViewholderUserBinding
 import com.project.tukcompass.models.ChatModel
-import com.project.tukcompass.models.ContentItem
+import com.project.tukcompass.models.ContactsModel
 
-class ChatAdapter(
-    private var chats: List<ChatModel>,
-    private val onItemClick: (ChatModel) -> Unit
-): RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+class ContactsAdapter(
+    private var contacts: List<ContactsModel>,
+    private val onItemClick: (ContactsModel) -> Unit
+): RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
 
-    inner class ViewHolder(val binding: ViewholderChatsBinding) :
+    inner class ViewHolder(val binding: ViewholderUserBinding) :
         RecyclerView.ViewHolder(binding.root)
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
 
-        val binding = ViewholderChatsBinding.inflate(
+        val binding = ViewholderUserBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -38,23 +35,23 @@ class ChatAdapter(
         holder: ViewHolder,
         position: Int
     ) {
-        val chat = chats[position]
-        holder.binding.name.text = chat.receiverName
-        holder.binding.text.text = chat.message
+        val contact = contacts[position]
+        holder.binding.name.text = contact.fname
+        holder.binding.text.text = contact.email
 
         Glide.with(holder.itemView.context)
-            .load(chat.profileUrl)
+            .load(contact.profileUrl)
             .into(holder.binding.avatarImage)
 
         holder.itemView.setOnClickListener {
-            onItemClick(chat)
+            onItemClick(contact)
         }
     }
 
-    override fun getItemCount() : Int = chats.size
+    override fun getItemCount() : Int = contacts.size
 
-    fun updateAdapter(newChats: List<ChatModel>) {
-        chats = newChats
+    fun updateAdapter(newContacts: List<ContactsModel>) {
+        contacts = newContacts
         notifyDataSetChanged()
     }
 

@@ -8,17 +8,14 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class EventModel(
-    val eventID: String,
-    val title: String,
-    val description: String,
-    val location : String,
-    val date: String? = "",
-    val expiryDate: String?,
-    val time: String,
-    val targetGroup: String? = "general",
-    val fileUrl : String?,
-    val createdBy : String?,
-    val createdAt : String?
+    val eventID: String = "",
+    val title: String = "",
+    val description: String = "",
+    val location : String = "",
+    val date: String = "",
+    val time: String = "",
+    val fileUrl : String? = "",
+
 ) : Parcelable
 @Parcelize
 data class  EventResponse(

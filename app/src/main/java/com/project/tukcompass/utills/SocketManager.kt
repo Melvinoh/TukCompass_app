@@ -1,48 +1,62 @@
+package com.project.tukcompass.socket
 
+import android.util.Log
+import com.project.tukcompass.models.MessageModel
+import com.project.tukcompass.models.SendMessage
+import io.socket.client.IO
+import io.socket.client.Socket
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import org.json.JSONObject
+import javax.inject.Singleton
 
-@singletone
-class SocketManager @Inject constructor() {
+@Singleton
+class SocketManager {
+    private var socket: Socket? = null
+    private val _connected = MutableStateFlow(false)
+    val connected: StateFlow<Boolean> = _connected
+    private val _incomingMessages = MutableSharedFlow<MessageModel>(extraBufferCapacity = 64)
+    val incomingMessages: SharedFlow<MessageModel> = _incomingMessages
+    fun connect(baseUrl: String, token: String) {
+        if (socket?.connected() == true) return
 
-  private var socket : Socket? = null
+        val opts = IO.Options().apply {
+            reconnection = true
+            reconnectionAttempts = Int.MAX_VALUE
+            reconnectionDelay = 1000
+            query = "token=$token"
+        }
+        socket = IO.socket(baseUrl, opts)
 
-  private val _connected = MutableStateFlow(false)
-  val connected: StateFlow<Boolean> = _connected 
+        socket?.on(Socket.EVENT_CONNECT) {
+            _connected.tryEmit(true)
+        }?.on(Socket.EVENT_DISCONNECT) {
+            _connected.tryEmit(false)
+        }?.on("new_message") { args ->
+            (args.firstOrNull() as? JSONObject)?.let { json ->
+                try {
+                    val msg = MessageModel(
+                        messageID = json.optString("messageID", ""),
+                        createdAt = json.optString("createdAt", ""),
+                        chatID = json.optString("chatID", ""),
+                        messageContent = json.optString("message", ""),
+                        mediaUrl = json.optString("mediaUrl", ""),
+                        senderID = json.optString("senderID", ""),
+                        senderName = json.optString("senderName", ""),
+                        profileUrl = json.optString("profileUrl", "")
+                    )
+                    _incomingMessages.tryEmit(msg)
+                } catch (e: Exception) {
+                    Log.e("SocketManager", "Error parsing new_message: ${e.message}")
+                }
+            }
+        }
 
-  private val _incommingMessages = MutableSharedFlow<MessageModel>(extraBits)
-  val incommingMessages : SharedFlow<MessageModel> = _incommingMessages
-
-  fun connect ( baseUrl : String, token: String){
-    if ( socket?.connected() == true) return
-
-    val opts = IO.options().apply{
-      reconnection = true
-      reconnectionAttempts = Int.MAX_VALUE 
-      reconnectionDelay = 1000
-      query = "token=$token"
+        socket?.connect() // connect once, not inside new_message listener
     }
 
-    socket = IO.socket(baseUrl, opts)
-
-    socket?.on(socket.EVENT_CONNECT){
-      _connected.tyrEmit(true)
-    }?.on(socket.EVENT_DISCONNECT){
-      _connected.tryEmit(false)
-    }?.on("new_message"){ message ->
-      (message.firstorNull() as? org.json.JSONOBJECT)?.let{ json ->
-         val msg = MessageModel(
-            id = json.optString("id", null),
-            chatId = json.getString("chatID"),
-            senderId = json.getString("senderID"),
-            message = json.getString("message"),
-            mediaUrl = json.optString("mediaUrl", null),
-            mediaType = json.optString("mediaType", null),
-            createdAt = json.getString("createdAt")
-          )
-
-         _incominMessages.tryEmit(msg)
-      }
-      socket?.connect()
-    }
     fun disconnect() {
         socket?.disconnect()
         socket?.off()
@@ -51,23 +65,22 @@ class SocketManager @Inject constructor() {
     }
 
     fun joinChat(chatId: String) {
-        socket?.emit("join_chat", chatId)
+        val payload = JSONObject().apply { put("chatID", chatId) }
+        socket?.emit("join_chat", payload)
     }
 
-    fun sendMessage(out: OutgoingMessage) {
-        val obj = org.json.JSONObject().apply {
-            put("chatID", out.chatId)
+    fun sendMessage(out: SendMessage) {
+        val obj = JSONObject().apply {
+            put("receiverID", out.receiverID)
+            put("type", out.type)
             put("message", out.message)
-            if (out.mediaUrl != null) put("mediaUrl", out.mediaUrl)
-            if (out.mediaType != null) put("mediaType", out.mediaType)
+            out.chatName?.let { put("chatName", it) }       // keep chatName under chatName
+            out.chatAvatar?.let { put("chatAvatar", it) }   // keep chatAvatar under chatAvatar
+            if (out.file.isNotBlank()) put("file", out.file) // if you pass file URL/string
         }
         socket?.emit("send_message", obj)
     }
-    
-
-
-
-
-  
 }
+
+
 

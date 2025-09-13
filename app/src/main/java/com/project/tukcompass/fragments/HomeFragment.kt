@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,28 +57,6 @@ class HomeFragment : Fragment() {
         val token = sharedPrefManager.getToken()
 
         binding.userName.text = user?.fname
-
-        val userRole = user?.role
-
-        Log.d("userLog", "${user}")
-        Log.d("tokenLog", "${token}")
-
-        val updatedCategoryList = categoryList.toMutableList()
-
-        if ( userRole == "lecturer") {
-
-            val index = updatedCategoryList.indexOfFirst { it.title.equals("Syllabus", ignoreCase = true) }
-            if (index != -1) {
-                updatedCategoryList[index] = CategoryModel("Add Event", R.drawable.add) // replace icon & title
-            }
-            val pastPapersIndex = updatedCategoryList.indexOfFirst { it.title.equals("past papers", ignoreCase = true) }
-            if (pastPapersIndex != -1) {
-                updatedCategoryList[pastPapersIndex] = CategoryModel("Unit Registration", R.drawable.test)
-            }
-        }
-
-
-
         binding.allEvents.setOnClickListener {
 
             findNavController().navigate(R.id.eventsFragment,)
@@ -121,8 +100,6 @@ class HomeFragment : Fragment() {
                 "Academics" -> findNavController().navigate(R.id.unitRegistrationFragment,)
                 "My connects" -> displayFragment(ChatFragment())
                 "My units" -> findNavController().navigate(R.id.unitContentFragment)
-
-
                 "Add Event" -> findNavController().navigate(R.id.eventRegistration)
                 "unit Registration" -> findNavController().navigate(R.id.unitRegistrationFragment)
 
@@ -149,8 +126,7 @@ class HomeFragment : Fragment() {
                     val adapter = binding.viewEvents.adapter as? EventsAdapter
                     if (adapter == null) {
                         binding.viewEvents.adapter = EventsAdapter(events) { event ->
-                            val bundle = bundleOf("event" to event)
-                            findNavController().navigate(R.id.eventsDetailsFragment,bundle)
+
                         }
                     } else {
                         adapter.updateEvents(events) // Assuming EventsAdapter has an update method

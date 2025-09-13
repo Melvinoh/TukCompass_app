@@ -2,36 +2,29 @@ package com.project.tukcompass.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.tukcompass.R
-import com.project.tukcompass.adapters.ChatAdapter
-import com.project.tukcompass.databinding.FragmentChatBinding
-import com.project.tukcompass.models.ChatModel
+import com.project.tukcompass.adapters.ContactsAdapter
+import com.project.tukcompass.databinding.FragmentUserBinding
 import com.project.tukcompass.utills.EncryptedSharedPrefManager
 import com.project.tukcompass.utills.Resource
-import com.project.tukcompass.viewModels.ChatsViewModel
+import com.project.tukcompass.viewModels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlin.getValue
 
 @AndroidEntryPoint
-class ChatFragment : Fragment() {
-    private lateinit var binding: FragmentChatBinding
+class UserFragment : Fragment() {
+    private lateinit var binding: FragmentUserBinding
     private lateinit var sharedPrefManager: EncryptedSharedPrefManager
-    private val viewModel: ChatsViewModel by viewModels()
-    private val serverUrl = "http://10.0.2.2:3000"
+    private val viewModel: AuthViewModel by viewModels()
+
     private var socketConnectedInitiated = false
 
 
@@ -40,7 +33,7 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentChatBinding.inflate(
+        binding = FragmentUserBinding.inflate(
             inflater,
             container,
             false
@@ -55,38 +48,34 @@ class ChatFragment : Fragment() {
 
         val token = sharedPrefManager.getToken()!!
 
-        viewModel.getUserchats()
-        observeUserChats()
-        viewModel.connectWithExistingToken(serverUrl, token)
+        viewModel.getUserContacts()
+        observeUserContacts()
 
     }
 
-    private fun observeUserChats(){
-        viewModel.chats.observe(viewLifecycleOwner) { response ->
+    private fun observeUserContacts(){
+        viewModel.contacts.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    val chats = response.data?.chats ?: emptyList()
-                    Log.d("chatLog", "${chats}")
+                    val classContacts = response.data?.classmates ?: emptyList()
+                    Log.d("chatLog", "${classContacts}")
 
-                    binding.chatRecyclerView.layoutManager = LinearLayoutManager(
+                    binding.userViewholder.layoutManager = LinearLayoutManager(
                         requireContext(),
                         LinearLayoutManager.VERTICAL,
                         false
                     )
-                    val adapter = binding.chatRecyclerView.adapter as? ChatAdapter
+                    val adapter = binding.userViewholder.adapter as? ContactsAdapter
 
                     if (adapter == null) {
-                        binding.chatRecyclerView.adapter = ChatAdapter(chats) { chat ->
+                        binding.userViewholder.adapter = ContactsAdapter(classContacts) { chat ->
 
-                            lifecycleScope.launch {
-                                viewModel.connected.filter { it }.first()
-                                viewModel.joinChat(chat.chatID)
-                            }
-                            val bundle = bundleOf("chat" to chat)
+
+                            val bundle = bundleOf("contacts" to classContacts)
                             findNavController().navigate(R.id.messageFragment, bundle)
                         }
                     } else {
-                        adapter.updateAdapter(chats)
+                        adapter.updateAdapter(classContacts)
                     }
                 }
                 is Resource.Error -> {
@@ -100,11 +89,5 @@ class ChatFragment : Fragment() {
                 else -> {}
             }
         }
-    }
-    private fun displayFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, fragment)//this container is in main activity
-            .addToBackStack("null")
-            .commit()
     }
 }

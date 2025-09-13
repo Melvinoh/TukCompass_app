@@ -9,7 +9,7 @@ data class ChatModel(
     val chatID: String = "",
     val profileUrl: String = "",
     val receiverName: String = "",
-    val lastSeen: String = "",
+    val receiverID: String = "",
     val message:String = "",
 ): Parcelable
 
@@ -21,22 +21,28 @@ data class ChatResponse(
 data class MessageResponse(
     val response: String = "",
     val chatID: String = "",
-    val message: List<MessageModel>
+    val messages: List<MessageModel>
 )
-
 data class  MessageModel(
+    val chatID: String = "",
     val messageID: String = "",
-    val message: String = "",
-    val mediaUrl: String = "",
+    val messageContent: String = "",
+    val mediaUrl: String? = "",
     val senderID: String = "",
-    val profileUrl: String = "",
+    val profileUrl: String? = "",
     val senderName: String = "",
-    val createdAt : String = ""
+    val createdAt : String = "",
 )
-
-data class sendMessage(
-    val receiverID: String = "",
+data class SendRes(
     val message: String = "",
-    val messageUrl : String = "",
-    val mediaType: String = "",
+    val data: List<MessageModel>,
+    val lastSeen: List<Int>
+)
+data class SendMessage(
+    val receiverID: String = "",
+    val type: String = "",
+    val message : String = "",
+    val chatName : String? = null,
+    val chatAvatar : String? = null,
+    val file: String = "",
 )

@@ -47,7 +47,7 @@ class UnitDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        unitDetails = arguments?.getParcelable<SessionDisplayItem>("unitDetails")!!
+        unitDetails = arguments?.getParcelable<SessionDisplayItem>("unitDetails") ?: SessionDisplayItem()
 
         val titles = listOf("Notes", "Assignment", "Media", "Links")
 

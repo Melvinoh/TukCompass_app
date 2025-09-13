@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.tukcompass.R
@@ -45,9 +47,6 @@ class EventDetailsFragment : Fragment() {
             binding.timeTxt.text = event.time
             binding.dateTxt.text = event.date
             binding.descriptionTxt.text = event.description
-
-        } :? run {
-            Toast.make(requireContext(),"Event not Found",Toast.LENGTH_SHORT).show()
         }
 
         binding.backBtn.setOnClickListener {
