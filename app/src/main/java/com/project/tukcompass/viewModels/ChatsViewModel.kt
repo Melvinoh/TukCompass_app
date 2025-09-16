@@ -29,8 +29,8 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
 
     private var _chats = MutableLiveData<Resource<ChatResponse>>()
     val chats: LiveData<Resource<ChatResponse>> = _chats
-    private val _messages = MutableStateFlow<Resource<List<MessageModel>>>(Resource.Loading)
-    val messages: StateFlow<Resource<List<MessageModel>>> = _messages
+    private val _messages = MutableLiveData<Resource<List<MessageModel>>>()
+    val messages: LiveData<Resource<List<MessageModel>>> = _messages
     private val _sendResponse= MutableLiveData<SendRes>()
     val sendResponse: LiveData<SendRes> get() = _sendResponse
     private val _messageResponse= MutableLiveData<MessageResponse>()
@@ -39,7 +39,7 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
     private var messagesJob: Job? = null
 
 
-    fun connectWithExistingToken(baseUrl: String, token: String) {
+    fun connectSocket(baseUrl: String, token: String) {
         repo.connectSocket(baseUrl, token)
         startCollectingIncoming()
     }
@@ -47,20 +47,20 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
         if (messagesJob?.isActive == true) return
         messagesJob = viewModelScope.launch {
             repo.incomingMessages.collect { msg ->
-                _messages.update { current ->
-                    when (current) {
-                        is Resource.Success -> {
-                            val updatedList = current.data + msg
-                            Resource.Success(updatedList ?: emptyList())
-                        }
-                        else -> {
-                            Resource.Success(listOf(msg))
-                        }
+                val current = _messages.value
+                when (current) {
+                    is Resource.Success -> {
+                        val updatedList = current.data.toMutableList().apply { add(msg) }
+                        _messages.postValue(Resource.Success(updatedList))
+                    }
+                    else -> {
+                        _messages.postValue(Resource.Success(listOf(msg)))
                     }
                 }
             }
         }
     }
+
     fun joinChat(chatId: String) = repo.joinChat(chatId)
     fun getUserchats(){
         viewModelScope.launch {
@@ -95,30 +95,44 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
         }
     }
 
-    fun sendMessage(receiverID: String, type: String, message: String, chatName: String, chatAvatar: String, imageUri: Uri?, context: Context) {
-        _messages.value = Resource.Loading
+    fun sendMessage(
+        receiverID: String,
+        type: String,
+        message: String,
+        chatName: String,
+        chatAvatar: String,
+        imageUri: Uri?,
+        context: Context
+    ) {
         viewModelScope.launch {
             try {
-                val result = repo.sendMessage(receiverID, type, message,chatName,chatAvatar,imageUri,context)
-                Log.d("send message request", "send response: $result")
-                when (result) {
-                    is Resource.Success -> {
-                        _messages.value = Resource.Success(result.data.data)
-                        _sendResponse.value = result.data
+                val result = repo.sendMessage(receiverID, type, message, chatName, chatAvatar, imageUri, context)
+                Log.d("ChatsViewModel", "Send response: $result")
+
+                if (result is Resource.Success) {
+                    val newMessage = result.data.data.getOrNull(0) ?: return@launch
+
+                    val updatedList = when (val current = _messages.value) {
+                        is Resource.Success -> current.data.toMutableList().apply { add(newMessage) }
+                        else -> listOf(newMessage)
                     }
-                    is Resource.Error -> {
-                        Log.d("error", result.message)
-                    }
-                    else -> {}
+
+                    _messages.value = Resource.Success(updatedList)
+                    _sendResponse.value = result.data
+                } else if (result is Resource.Error) {
+                    Log.e("ChatsViewModel", "Send message error: ${result.message}")
                 }
+
             } catch (e: Exception) {
-                Log.e("AddComment", "Exception: ${e.message}")
+                Log.e("ChatsViewModel", "Exception sending message: ${e.message}")
             }
         }
     }
-
     override fun onCleared() {
         super.onCleared()
         repo.disconnectSocket()
     }
 }
+
+
+

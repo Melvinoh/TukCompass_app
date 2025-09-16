@@ -31,9 +31,11 @@ class SocketManager {
         socket = IO.socket(baseUrl, opts)
 
         socket?.on(Socket.EVENT_CONNECT) {
+            Log.d("SocketManager", "✅ Connected")
             _connected.tryEmit(true)
         }?.on(Socket.EVENT_DISCONNECT) {
             _connected.tryEmit(false)
+            Log.w("SocketManager", "⚠️ Disconnected")
         }?.on("new_message") { args ->
             (args.firstOrNull() as? JSONObject)?.let { json ->
                 try {
@@ -53,8 +55,11 @@ class SocketManager {
                 }
             }
         }
+        socket?.on(Socket.EVENT_CONNECT_ERROR) { args ->
+            Log.e("SocketManager", "❌ Connection error: ${args.joinToString()}")
+        }
 
-        socket?.connect() // connect once, not inside new_message listener
+        socket?.connect()
     }
 
     fun disconnect() {

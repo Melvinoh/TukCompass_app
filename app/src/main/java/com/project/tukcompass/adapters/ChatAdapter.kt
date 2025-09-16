@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.tukcompass.R
 import com.project.tukcompass.databinding.VieholderCategoryBinding
 import com.project.tukcompass.databinding.ViewholderChatsBinding
 import com.project.tukcompass.models.CategoryModel
@@ -44,6 +45,7 @@ class ChatAdapter(
 
         Glide.with(holder.itemView.context)
             .load(chat.profileUrl)
+            .placeholder(R.drawable.ic_account)
             .into(holder.binding.avatarImage)
 
         holder.itemView.setOnClickListener {

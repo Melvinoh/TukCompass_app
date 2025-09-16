@@ -2,6 +2,7 @@ package com.project.tukcompass.fragments
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +15,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.project.tukcompass.R
 
 import com.project.tukcompass.adapters.MessageAdapter
 import com.project.tukcompass.databinding.FragmentMessageBinding
 import com.project.tukcompass.models.ChatModel
+import com.project.tukcompass.models.ContactsModel
 import com.project.tukcompass.models.EventModel
 
 import com.project.tukcompass.utills.EncryptedSharedPrefManager
@@ -37,6 +40,7 @@ class MessageFragment : Fragment() {
     private val viewModel: ChatsViewModel by viewModels()
     private lateinit var adapter: MessageAdapter
     private lateinit var chatInfo: ChatModel
+    private lateinit var contactInfo: ContactsModel
     private lateinit var sharedPrefManager: EncryptedSharedPrefManager
     private var imageUri: Uri? = null
 
@@ -54,17 +58,14 @@ class MessageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chatInfo = arguments?.getParcelable("chat") ?: ChatModel()
+        val contactArg = arguments?.getParcelable<ContactsModel>("contacts")
+        val chatArg = arguments?.getParcelable<ChatModel>("chat")
 
-        binding.nameTxt.text = chatInfo.receiverName
 
-        Glide.with(requireContext())
-            .load(chatInfo.profileUrl)
-            .into(binding.profilePic)
+        Log.d("MessageFragment", "Bundle: $arguments")
+        Log.d("MessageFragment", "contactArg: $contactArg")
 
-        binding.backBtn.setOnClickListener {
-            findNavController().popBackStack()
-        }
+
         sharedPrefManager = EncryptedSharedPrefManager(requireContext())
 
         val user = sharedPrefManager.getUser()!!
@@ -73,34 +74,66 @@ class MessageFragment : Fragment() {
         binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.chatMessagesRecyclerView.adapter = adapter
 
-        viewModel.loadMessages(chatInfo.chatID)
+        binding.emptyState.visibility = View.GONE
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.messages.collect { resource ->
-                when (resource) {
+        if(chatArg != null ) {
+            chatInfo = chatArg
 
-                    is Resource.Success -> {
-                        val results = resource?.data ?: emptyList()
-                        adapter.submitList(results)
-                        if (results.isNotEmpty()) {
-                            binding.chatMessagesRecyclerView.scrollToPosition(results.size - 1)
-                        }
+            lifecycleScope.launch {
+                viewModel.connected.filter { it }.first()
+                viewModel.joinChat(chatArg.chatID)
+            }
+            binding.nameTxt.text = chatArg.receiverName
+            Glide.with(requireContext())
+                .load(chatArg.profileUrl)
+                .into(binding.profilePic)
+
+
+            viewModel.loadMessages(chatArg.chatID)
+        }
+        if(contactArg != null){
+            contactInfo = contactArg
+            binding.nameTxt.text = "${contactArg.fname} ${contactArg.sname}"
+            Glide.with(requireContext())
+                .load(contactArg.profileUrl)
+                .placeholder(R.drawable.user_outlined)
+                .into(binding.profilePic)
+
+        }
+
+        viewModel.messages.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val results = resource.data ?: emptyList()
+                    adapter.submitList(results)
+                    if (results.isNotEmpty()) {
+                        binding.chatMessagesRecyclerView.scrollToPosition(results.size - 1)
                     }
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {}
                 }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
+                }
+                else -> { /* Handle loading or ignore */ }
             }
         }
+
+        binding.backBtn.setOnClickListener {
+            findNavController().navigate(R.id.chatFragment)
+        }
+
         binding.addBtn.setOnClickListener {
             pickImageLauncher.launch("image/*")
+        }
+        val receiverID = when {
+            chatArg != null -> chatArg.receiverID
+            contactArg != null -> contactArg.userID
+            else -> null
         }
         binding.sendBtn.setOnClickListener {
             val text = binding.messageInput.text.toString().trim()
             if (text.isNotEmpty()) {
                 viewModel.sendMessage(
-                    receiverID = chatInfo.receiverID,
+                    receiverID = receiverID!!,
                     type = "private",
                     message = text,
                     chatName = "",
@@ -111,10 +144,6 @@ class MessageFragment : Fragment() {
                 binding.messageInput.text?.clear()
                 binding.imagePreview.visibility = View.GONE
             }
-        }
-        lifecycleScope.launch {
-            viewModel.connected.filter { it }.first()
-            viewModel.joinChat(chatInfo.chatID)
         }
     }
     private val pickImageLauncher = registerForActivityResult(

@@ -53,40 +53,35 @@ class ClubSportEnrolment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        club = requireArguments().getParcelable<ClubSportModel>("club")!!
+        club = requireArguments().getParcelable("club") ?: ClubSportModel()
         clubId = club.clubSportsID
 
-        val clubSportID: ClubSportReq = ClubSportReq(clubId)
-
-
+        val clubSportID = ClubSportReq(clubId)
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         binding.submitBtn.setOnClickListener {
-
             viewModel.enrollClubSport(clubSportID)
 
-            viewModel.enrollmentStatus.observe(viewLifecycleOwner){response ->
+            viewModel.enrollmentStatus.observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is Resource.Success -> {
-                        val message = response.data.message
-                        Log.d("enrollment status", "${message}")
-
-                        val bundle = bundleOf("club" to club)
-                        findNavController().navigate(R.id.clubsFragment, bundle)
+                        SuccessDialogFragment.newInstance(
+                            "You have successfully enrolled to ${club.name}!",
+                            R.id.clubsFragment,
+                            club = club
+                        ).show(parentFragmentManager, "SuccessDialog")
                     }
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                        Log.d("error", "$response.message")
-
                     }
                     is Resource.Loading -> {
                         Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
-                        Log.d("loading", "Loading")
                     }
                     else -> {}
                 }
             }
-
         }
-
     }
 }

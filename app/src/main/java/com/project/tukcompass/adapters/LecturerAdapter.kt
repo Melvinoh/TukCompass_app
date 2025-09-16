@@ -3,6 +3,8 @@ package com.project.tukcompass.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.project.tukcompass.R
 import com.project.tukcompass.databinding.ViewholderLecturersBinding
 import com.project.tukcompass.models.Lecturer
 import com.project.tukcompass.models.PastPaper
@@ -33,6 +35,13 @@ class LecturerAdapter(
             academicTxt.text = item.academicYear
             enrollBtn.setOnClickListener { onEnrollClick(item) }
         }
+        holder.binding.nameTxt.text = item.fullName
+
+        Glide.with(holder.itemView.context)
+            .load(item.profileUrl)
+            .placeholder(R.drawable.ic_account)
+            .into(holder.binding.avatarImage)
+
     }
     fun updateAdapter(newAnnouncements: List<Lecturer>) {
         lecturers = newAnnouncements

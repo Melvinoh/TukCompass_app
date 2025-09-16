@@ -121,7 +121,7 @@ class ChatRepo @Inject constructor(private val api: Api, private val socketManag
                 Resource.Error("Failed with code ${response.code()}: ${response.message()}")
             }
         } catch (e: IOException) {
-            Log.e("CreatePostError", "IO: ${e.localizedMessage}")
+            Log.e("NetworkError", "IO: ${e.localizedMessage}")
             Resource.Error("Network Error: ${e.localizedMessage}")
         } catch (e: Exception) {
             Log.e("CreatePostError", "Unknown: ${e.localizedMessage}")

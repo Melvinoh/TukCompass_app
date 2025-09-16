@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.project.tukcompass.R
 import com.project.tukcompass.adapters.AnnouncementAdapter
 import com.project.tukcompass.adapters.CategoryAdapter
@@ -34,13 +35,12 @@ class HomeFragment : Fragment() {
 
     val categoryList = listOf(
         CategoryModel("add event", R.drawable.plus),
-        CategoryModel("past papers", R.drawable.test),
+        CategoryModel("Course units", R.drawable.sylabus),
         CategoryModel("Clubs", R.drawable.clubs),
-        CategoryModel("Academics", R.drawable.sylabus),
+        CategoryModel("Academics", R.drawable.winner),
         CategoryModel("My connects", R.drawable.network),
-        CategoryModel("My units", R.drawable.winner)
+        CategoryModel("past papers", R.drawable.test),
     )
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +62,10 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.eventsFragment,)
 
         }
+        Glide.with(requireContext())
+            .load(user?.profileUrl)
+            .placeholder(R.drawable.ic_account)
+            .into(binding.profilePic)
 
 
         observeCategories()
@@ -95,20 +99,17 @@ class HomeFragment : Fragment() {
 
             when (category.title) {
                 "add event" -> findNavController().navigate(R.id.eventRegistration)
-                "past papers" -> findNavController().navigate(R.id.unitEnrolmentFragment)
+                "Course units" -> findNavController().navigate(R.id.CourseUnitsFragment)
                 "Clubs" -> findNavController().navigate(R.id.allClubSports)
-                "Academics" -> findNavController().navigate(R.id.unitRegistrationFragment,)
+                "Academics" -> findNavController().navigate(R.id.unitEnrolmentFragment,)
                 "My connects" -> displayFragment(ChatFragment())
                 "My units" -> findNavController().navigate(R.id.unitContentFragment)
                 "Add Event" -> findNavController().navigate(R.id.eventRegistration)
-                "unit Registration" -> findNavController().navigate(R.id.unitRegistrationFragment)
+                "past papers" -> findNavController().navigate(R.id.unitRegistrationFragment)
 
                 else -> Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
             }
-
         }
-
-
     }
 
     private fun observeEvents() {
@@ -126,7 +127,8 @@ class HomeFragment : Fragment() {
                     val adapter = binding.viewEvents.adapter as? EventsAdapter
                     if (adapter == null) {
                         binding.viewEvents.adapter = EventsAdapter(events) { event ->
-
+                            val bundle = bundleOf("event" to event)
+                            findNavController().navigate(R.id.eventsDetailsFragment,bundle)
                         }
                     } else {
                         adapter.updateEvents(events) // Assuming EventsAdapter has an update method

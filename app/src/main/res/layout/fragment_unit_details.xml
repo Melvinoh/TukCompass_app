@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="2dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="35dp"
         android:gravity="center_vertical"
         app:layout_collapseMode="pin">
 
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="6dp"
+                android:padding="4dp"
                 android:layout_margin="6dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,7 +148,7 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="12dp"
                     android:layout_height="wrap_content">
 
                 </com.google.android.material.tabs.TabLayout>

@@ -2,7 +2,7 @@ package com.project.tukcompass.models
 
 data class SignupReqModel(
     val fname: String,
-    val lname: String,
+    val sname: String,
     val email: String,
     val userID: String,
     val role: String,

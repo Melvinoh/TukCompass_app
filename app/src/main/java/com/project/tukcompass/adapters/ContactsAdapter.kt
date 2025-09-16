@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.tukcompass.R
 import com.project.tukcompass.databinding.ViewholderChatsBinding
 import com.project.tukcompass.databinding.ViewholderUserBinding
 import com.project.tukcompass.models.ChatModel
@@ -41,6 +42,7 @@ class ContactsAdapter(
 
         Glide.with(holder.itemView.context)
             .load(contact.profileUrl)
+            .placeholder(R.drawable.ic_account)
             .into(holder.binding.avatarImage)
 
         holder.itemView.setOnClickListener {

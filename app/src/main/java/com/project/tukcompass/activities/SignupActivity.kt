@@ -28,7 +28,7 @@ class SignupActivity : AppCompatActivity() {
 
         binding.btnSignUp.setOnClickListener {
             val fname = binding.etFirstName.text.toString().trim()
-            val lname = binding.etLastName.text.toString().trim()
+            val sname = binding.etLastName.text.toString().trim()
             val email = binding.etEmail.text.toString().trim()
             val regNo = binding.etRegNumber.text.toString().trim()
             val role = binding.etRole.text.toString().trim()
@@ -37,10 +37,10 @@ class SignupActivity : AppCompatActivity() {
             val password = binding.etPassword.text.toString()
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            if (!validateInput(fname, lname, email, regNo, role, courseName, password, confirmPassword)) return@setOnClickListener
+            if (!validateInput(fname, sname, email, regNo, role, courseName, password, confirmPassword)) return@setOnClickListener
 
             val signupRequest = SignupReqModel(
-                fname, lname, email, regNo, role, courseName, "", enrolmentYear, password, confirmPassword
+                fname, sname, email, regNo, role, courseName, "", enrolmentYear, password, confirmPassword
             )
             viewModel.signup(signupRequest)
 

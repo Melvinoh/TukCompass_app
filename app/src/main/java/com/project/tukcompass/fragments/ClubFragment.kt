@@ -51,7 +51,7 @@ class ClubFragment : Fragment() {
         }
 
 
-        club = requireArguments().getParcelable<ClubSportModel>("club")!!
+        club = requireArguments().getParcelable<ClubSportModel>("club")  ?: ClubSportModel()
         clubId = club.clubSportsID
 
         Log.d("postResponseLog", "$clubId")

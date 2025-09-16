@@ -82,6 +82,25 @@
         android:label="MessageFragment">
 
     </fragment>
+    <fragment
+        android:id="@+id/UserFragment"
+        android:name="com.project.tukcompass.fragments.UserFragment"
+        android:label="UserFragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/CourseUnitsFragment"
+        android:name="com.project.tukcompass.fragments.CourseUnitsFragment"
+        android:label="CourseUnitFragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/academicsFragment"
+        android:name="com.project.tukcompass.fragments.AcademicsFragment"
+        android:label="CourseUnitFragment">
+
+    </fragment>
+
 
 
 

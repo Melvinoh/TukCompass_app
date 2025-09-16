@@ -17,8 +17,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="0dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/button_back"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:layout_margin="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,23 +100,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:padding="6dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="0dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add Event"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_marginBottom="16dp"/>
 
 
                 <com.google.android.material.textfield.TextInputLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/maven_pro_medium"
                     android:hint="title"
                     app:boxStrokeColor="#009344"
@@ -132,7 +132,7 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/maven_pro_medium"
                     android:hint="description"
                     app:boxStrokeColor="#009344"
@@ -143,10 +143,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="upload file" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -154,7 +150,7 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/maven_pro_medium"
                     android:hint="location"
                     app:boxStrokeColor="#009344"
@@ -169,7 +165,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/maven_pro_medium"
                     android:hint="date"
                     app:boxStrokeColor="#009344"
@@ -185,7 +181,7 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="1dp"
                     android:fontFamily="@font/maven_pro_medium"
                     android:hint="Time"
                     app:boxStrokeColor="#009344"
@@ -218,20 +214,24 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="59dp"
                     android:text="upload File"
                     app:layout_constraintEnd_toEndOf="@+id/uploadFile"
                     app:layout_constraintStart_toStartOf="@+id/uploadFile"
-                    tools:layout_editor_absoluteY="94dp" />
+                    app:layout_constraintTop_toTopOf="@+id/uploadFile" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imagePreview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tuk_2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="10dp"
+                    android:src="@drawable/tuk_2"
                     android:visibility="gone"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -249,6 +249,7 @@
                 android:text="Submit"
                 android:textAllCaps="false"
                 android:layout_marginTop="22dp"
+                android:layout_marginBottom="110dp"
                 android:background="@drawable/button_background"
                 android:textColor="@color/white" />
 

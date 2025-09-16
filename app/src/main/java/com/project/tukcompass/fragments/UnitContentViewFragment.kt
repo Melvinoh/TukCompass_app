@@ -62,7 +62,17 @@ class UnitContentViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getContent(unitDetails.unitOfferingID)
+
+        val defaultUnitOfferingID = "fe9dfc6f-ca3e-4f6b-8cfb-019cb6127efb"
+
+        // If unitDetails is empty/null use default
+        val unitOfferingID = if (unitDetails.unitOfferingID.isNullOrBlank()) {
+            defaultUnitOfferingID
+        } else {
+            unitDetails.unitOfferingID
+        }
+        viewModel.getContent(unitOfferingID)
+
         observeContent()
     }
 

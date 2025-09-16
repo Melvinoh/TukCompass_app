@@ -1,7 +1,7 @@
 package com.project.tukcompass.fragments
 
 import android.app.TimePickerDialog
-import android.content.Intent
+
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,19 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
+
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.project.tukcompass.R
-import com.project.tukcompass.activities.HomeActivity
-import com.project.tukcompass.adapters.EventsAdapter
+
 import com.project.tukcompass.databinding.FragmentEventRegistrationBinding
 import com.project.tukcompass.models.EventRequest
-import com.project.tukcompass.models.LoginModels
-import com.project.tukcompass.models.UserModels
+
 import com.project.tukcompass.utills.Resource
 import com.project.tukcompass.viewModels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,11 +45,6 @@ class EventRegistrationFragment : Fragment() {
             binding.imagePreview.setImageURI(it)
             binding.imagePreview.visibility = View.VISIBLE
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -98,9 +91,11 @@ class EventRegistrationFragment : Fragment() {
         binding.uploadFile.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
+        binding.buttonBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         binding.submitBtn.setOnClickListener {
-
 
             val title = binding.titleTxt.text.toString()
             val desc = binding.descriptionTxt.text.toString()
@@ -121,33 +116,37 @@ class EventRegistrationFragment : Fragment() {
                 date = date,
                 time = binding.timeTxt.text.toString()
             )
+            val message :String = "Event created successfully!"
+            val destination :Int = R.id.eventsFragment
 
             viewModel.addEvent(event, imageUri, requireContext())
             Log.d("EventLog", "${event}")
-            observeEvents()
+            observeEvents(message, destination)
 
-
+          findNavController().navigate(R.id.eventsFragment)
         }
     }
 
-    private fun observeEvents() {
+    private fun observeEvents( msg :String, dest :Int) {
         viewModel.events.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    val events = response.data?.events ?: emptyList()
-                    Log.d("EventLog", "${events}")
+                    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                    SuccessDialogFragment.newInstance(
+                        "You have successfully enrolled ",
+                        R.id.eventsFragment,
+                    ).show(parentFragmentManager, "SuccessDialog")
                 }
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                    Log.d("error", "$response.message")
                 }
                 is Resource.Loading -> {
                     Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
-                    Log.d("loading", "Loading")
                 }
                 else -> {}
             }
         }
+
     }
 
 }

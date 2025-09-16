@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.tukcompass.models.ContentGroup
 import com.project.tukcompass.models.CourseRequest
 import com.project.tukcompass.models.CourseResponse
+import com.project.tukcompass.models.CourseUnitsResponse
 import com.project.tukcompass.models.TimetableResponse
 import com.project.tukcompass.models.UnitContentResponse
 import com.project.tukcompass.models.UnitData
@@ -30,6 +31,11 @@ class AcademicsViewHolder @Inject constructor(private val repo: AcademicRepo): V
     private var _content = MutableLiveData<Resource<UnitContentResponse>>()
     val content: LiveData<Resource<UnitContentResponse>> = _content
 
+    private var _courseUnits = MutableLiveData<Resource<CourseUnitsResponse>>()
+    val courseUnits: LiveData<Resource<CourseUnitsResponse>> = _courseUnits
+
+
+
 
     private var _unitDetails = MutableLiveData<Resource<UnitData>>()
     val unitDetails: LiveData<Resource<UnitData>> = _unitDetails
@@ -41,7 +47,6 @@ class AcademicsViewHolder @Inject constructor(private val repo: AcademicRepo): V
             _timetable.postValue(response)
         }
     }
-
     fun fetchCourses(reqBody: CourseRequest){
         viewModelScope.launch {
             _courses.value = Resource.Loading
@@ -49,7 +54,6 @@ class AcademicsViewHolder @Inject constructor(private val repo: AcademicRepo): V
             _courses.postValue(response)
         }
     }
-
     fun getContent(offeringID: String){
         viewModelScope.launch {
             _content.value = Resource.Loading
@@ -62,6 +66,13 @@ class AcademicsViewHolder @Inject constructor(private val repo: AcademicRepo): V
             _unitDetails.value = Resource.Loading
             val response = repo.getUnitDetails(unitID)
             _unitDetails.postValue(response)
+        }
+    }
+    fun fetchCourseUnits(){
+        viewModelScope.launch {
+            _courseUnits.value = Resource.Loading
+            val response = repo.fetchUserCourseUnits()
+            _courseUnits.postValue(response)
         }
     }
 }

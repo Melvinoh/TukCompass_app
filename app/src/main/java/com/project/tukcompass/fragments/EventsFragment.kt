@@ -58,17 +58,6 @@ class EventsFragment : Fragment() {
                 is Resource.Success -> {
                     val events = response.data?.events ?: emptyList()
 
-//                    val upcomingEvents = events.filter { event ->
-//                        try {
-//                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-//                            val eventDate = LocalDate.parse(event.date, formatter)
-//                            eventDate.isAfter(LocalDate.now()) || eventDate.isEqual(LocalDate.now())
-//                        } catch (e: Exception) {
-//                            false
-//                        }
-//                    }
-
-
                     Log.d("EventLog", "${events}")
 
                     binding.upcomingEventHolder.layoutManager = LinearLayoutManager(

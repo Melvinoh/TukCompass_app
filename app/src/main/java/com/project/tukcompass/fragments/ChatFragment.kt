@@ -54,10 +54,14 @@ class ChatFragment : Fragment() {
         sharedPrefManager = EncryptedSharedPrefManager(requireContext())
 
         val token = sharedPrefManager.getToken()!!
+        binding.fabNewMessage.setOnClickListener {
+            findNavController().navigate(R.id.UserFragment,)
+        }
 
         viewModel.getUserchats()
         observeUserChats()
-        viewModel.connectWithExistingToken(serverUrl, token)
+        viewModel.connectSocket(serverUrl, token)
+        binding.emptyState.visibility = View.GONE
 
     }
 
@@ -73,6 +77,7 @@ class ChatFragment : Fragment() {
                         LinearLayoutManager.VERTICAL,
                         false
                     )
+                    binding.emptyState.visibility = View.GONE
                     val adapter = binding.chatRecyclerView.adapter as? ChatAdapter
 
                     if (adapter == null) {

@@ -48,6 +48,10 @@ class UserFragment : Fragment() {
 
         val token = sharedPrefManager.getToken()!!
 
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         viewModel.getUserContacts()
         observeUserContacts()
 
@@ -68,10 +72,8 @@ class UserFragment : Fragment() {
                     val adapter = binding.userViewholder.adapter as? ContactsAdapter
 
                     if (adapter == null) {
-                        binding.userViewholder.adapter = ContactsAdapter(classContacts) { chat ->
-
-
-                            val bundle = bundleOf("contacts" to classContacts)
+                        binding.userViewholder.adapter = ContactsAdapter(classContacts) { contact ->
+                            val bundle = bundleOf("contacts" to contact )
                             findNavController().navigate(R.id.messageFragment, bundle)
                         }
                     } else {

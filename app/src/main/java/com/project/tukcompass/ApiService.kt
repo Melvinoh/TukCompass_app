@@ -13,6 +13,7 @@ import com.project.tukcompass.models.CommentResponse
 import com.project.tukcompass.models.ContactsRes
 import com.project.tukcompass.models.CourseRequest
 import com.project.tukcompass.models.CourseResponse
+import com.project.tukcompass.models.CourseUnitsResponse
 import com.project.tukcompass.models.EnrollmentStatus
 import com.project.tukcompass.models.EventRequest
 
@@ -99,6 +100,8 @@ interface Api {
 
 
  // Academics endpoints
+ @GET("admin/fetchUnits")
+ suspend fun fetchUserCourseUnits(): Response<CourseUnitsResponse>
 
  @POST("lecturer/fetchCourses")
  suspend fun fetchCourses(@Body reqBody: CourseRequest): Response<CourseResponse>

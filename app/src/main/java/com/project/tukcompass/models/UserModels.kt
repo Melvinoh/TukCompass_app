@@ -1,5 +1,8 @@
 package com.project.tukcompass.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class UserModels(
     val userID: String,
     val fname: String,
@@ -12,17 +15,17 @@ data class UserModels(
     val mobile: String,
     val profileUrl: String
 )
-
+@Parcelize
 data class ContactsModel(
 
-    val userID: String,
-    val fname: String,
-    val sname: String,
-    val email: String,
-    val mobile: String,
-    val profileUrl: String
+    val userID: String = "",
+    val fname: String = "",
+    val sname: String = "",
+    val email: String = "",
+    val profileUrl: String? = ""
 
-)
+
+): Parcelable
 
 data class ContactsRes(
     val course: String,
