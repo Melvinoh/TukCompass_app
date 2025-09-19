@@ -20,13 +20,12 @@
         app:layout_constraintVertical_bias="0.426" />
 
     <LinearLayout
-        android:id="@+id/linearLayout7"
+        android:id="@+id/chatMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
-
         android:layout_marginTop="44dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="16dp"
             android:layout_gravity="center_horizontal"
             android:text="Chat Messages"
             android:textSize="20sp"
@@ -60,7 +59,7 @@
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+        app:layout_constraintTop_toBottomOf="@+id/chatMessages">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

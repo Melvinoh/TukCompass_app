@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.project.tukcompass.R
 import com.project.tukcompass.adapters.ViewPagerAdapter
@@ -47,9 +48,23 @@ class UnitDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
+
         unitDetails = arguments?.getParcelable<SessionDisplayItem>("unitDetails") ?: SessionDisplayItem()
 
-        val titles = listOf("Notes", "Assignment", "Media", "Links")
+
+
+        binding.unitName.text = unitDetails.unitName
+        binding.lecUnitName.text = unitDetails.unitName
+        binding.lecName.text = unitDetails.lecturerName
+
+        Glide.with(requireContext())
+            .load(unitDetails.lecturerProfile)
+            .placeholder(R.drawable.ic_account)
+            .into(binding.profilePic)
+
+
+        val titles = listOf("Notes", "Assigno", "Media", "Links")
 
 
         val fragments = listOf(
@@ -69,9 +84,9 @@ class UnitDetailsFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             val tabView = layoutInflater.inflate(R.layout.tab_layout, null)
             val title = tabView.findViewById<TextView>(R.id.tabTxt)
-
             title.text = titles[position]
             tab.customView = tabView
+
         }.attach()
     }
 

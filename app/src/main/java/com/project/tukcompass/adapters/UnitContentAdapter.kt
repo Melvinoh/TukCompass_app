@@ -37,6 +37,7 @@ class UnitContentAdapter(
                 scope.launch {
                     try {
 
+                        binding.downloadBtn.visibility = View.GONE
                         binding.progressBar.visibility = View.VISIBLE
                         val file = withContext(Dispatchers.IO) {
                             val pdfFile = File(

@@ -34,6 +34,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -127,6 +128,11 @@ interface Api {
 
  @GET("chats/getChatMessages/{chatID}")
  suspend fun getChatMessages(@Path("chatID") chatID: String): Response<MessageResponse>
+ @DELETE("chats/deleteChat/{chatID}")
+ suspend fun deleteChat(@Path("chatID") chatID: String): Response<Unit>
+
+ @DELETE("chats/deleteMessage/{messageID}")
+ suspend fun deleteMessage(@Path("messageID") messageID: String): Response<Unit>
  @Multipart
  @POST("chats/sendMessage")
  suspend fun sendMessageAPI(

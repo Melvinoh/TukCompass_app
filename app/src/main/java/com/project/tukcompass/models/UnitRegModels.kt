@@ -35,14 +35,14 @@ data class CourseRequest(
 data class CourseResponse(
     val courseName: List<String>
 )
-
+@Parcelize
 data class ContentGroup(
     val pdf: List<ContentItem>,
     val assignment: List<ContentItem>,
     val video: List<ContentItem>,
     val link: List<ContentItem>,
     val past_papers: List<ContentItem>
-)
+):Parcelable
 
 @Parcelize
 data class ContentItem(
@@ -52,10 +52,10 @@ data class ContentItem(
     val url: String,
     val contentType: String
 ):Parcelable
-
+@Parcelize
 data class UnitContentResponse(
     val content: ContentGroup
-)
+):Parcelable
 
 data class UnitData(
     val unit: UnitInfo,
@@ -66,12 +66,13 @@ data class UnitData(
 
 data class UnitInfo(val unitID: String, val unitName: String)
 
+@Parcelize
 data class Lecturer(
-    val fullName: String,
-    val profileUrl: String?,
-    val academicYear: String,
-    val unitOfferingID: String
-)
+    val fullName: String ="",
+    val profileUrl: String? = null,
+    val academicYear: String = "",
+    val unitOfferingID: String = ""
+):Parcelable
 
 data class CourseOutline(
     val courseOutline: String,

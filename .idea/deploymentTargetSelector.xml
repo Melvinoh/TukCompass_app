@@ -3,11 +3,11 @@
   <component name="deploymentTargetSelector">
     <selectionStates>
       <SelectionState runConfigName="app">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-08-12T02:40:24.088266300Z">
+        <option name="selectionMode" value="DIALOG" />
+        <DropdownSelection timestamp="2025-09-18T13:20:04.162523400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=E:\android\.android\avd\Galaxy_S25_Edge.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=05770370B5006000" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=E:\android\.android\avd\Galaxy_S25_Edge.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=E:\android\.android\avd\Galaxy_s25_edge.avd" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=E:\android\.android\avd\Galaxy_Note_10.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=E:\android\.android\avd\Galaxy_s25_edge_2.avd" />
               </handle>
             </Target>
           </targets>

@@ -3,8 +3,11 @@ package com.project.tukcompass.fragments
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.ActionMode
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -39,6 +42,7 @@ class MessageFragment : Fragment() {
     private lateinit var binding: FragmentMessageBinding
     private val viewModel: ChatsViewModel by viewModels()
     private lateinit var adapter: MessageAdapter
+    private var actionMode: ActionMode? = null
     private lateinit var chatInfo: ChatModel
     private lateinit var contactInfo: ContactsModel
     private lateinit var sharedPrefManager: EncryptedSharedPrefManager
@@ -70,7 +74,10 @@ class MessageFragment : Fragment() {
 
         val user = sharedPrefManager.getUser()!!
 
-        adapter = MessageAdapter(currentUserId = user.userID)
+        adapter = MessageAdapter(currentUserId = user.userID).apply {
+            onItemLongClick = { pos -> enableActionMode(pos) }
+            onItemClick = { pos -> if (actionMode != null) toggleSelection(pos) }
+        }
         binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.chatMessagesRecyclerView.adapter = adapter
 
@@ -155,11 +162,77 @@ class MessageFragment : Fragment() {
             binding.imagePreview.visibility = View.VISIBLE
         }
     }
+
+    private fun enableActionMode(position: Int) {
+        if (actionMode == null) {
+            actionMode = requireActivity().startActionMode(actionModeCallback)
+        }
+        toggleSelection(position)
+    }
+    private fun toggleSelection(position: Int) {
+        adapter.toggleSelection(position)
+        val count = adapter.getSelectedMessages().size
+        if (count == 0) {
+            actionMode?.finish()
+        } else {
+            actionMode?.title = "$count selected"
+        }
+    }
+    private val actionModeCallback = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode?.menuInflater?.inflate(R.menu.contextual_menu, menu)
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?) = false
+
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            return when (item?.itemId) {
+                R.id.action_delete -> {
+                    val selected = adapter.getSelectedMessages()
+                    Toast.makeText(requireContext(), "Delete ${selected.size} messages", Toast.LENGTH_SHORT).show()
+
+                    selected.forEach {
+                        viewModel.deleteMessage(it.messageID, it.chatID)
+
+                    }
+
+                    viewModel.deleteMessageResult.observe(viewLifecycleOwner) { result ->
+                        when (result) {
+                            is Resource.Success -> {
+                                Toast.makeText(requireContext(), "message deleted", Toast.LENGTH_SHORT).show()
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                            }
+                            is Resource.Loading -> {
+                                // Optional: show progress spinner
+                            }
+                        }
+                    }
+
+                    mode?.finish()
+                    true
+                }
+                R.id.action_forward -> {
+                    val selected = adapter.getSelectedMessages()
+                    Toast.makeText(requireContext(), "Forward ${selected.size} messages", Toast.LENGTH_SHORT).show()
+                    mode?.finish()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            adapter.clearSelection()
+            actionMode = null
+        }
+    }
     companion object {
         fun newInstance(chat: ChatModel) = MessageFragment().apply{
             arguments = bundleOf("chat" to chat)
         }
     }
-
 
 }

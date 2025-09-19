@@ -12,9 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Semester 1"
-        android:textStyle="bold"
-        android:layout_margin="10dp"
-        android:textSize="16sp"/>
+        android:layout_margin="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/unitRecyclerView"

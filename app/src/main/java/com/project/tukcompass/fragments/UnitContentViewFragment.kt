@@ -22,6 +22,7 @@ import com.project.tukcompass.adapters.MyGroupAdapter
 import com.project.tukcompass.adapters.UnitContentAdapter
 import com.project.tukcompass.databinding.FragmentUnitContentViewBinding
 import com.project.tukcompass.models.ContentItem
+import com.project.tukcompass.models.Lecturer
 import com.project.tukcompass.models.SessionDisplayItem
 import com.project.tukcompass.utills.Resource
 import com.project.tukcompass.viewModels.AcademicsViewHolder
@@ -34,6 +35,7 @@ class UnitContentViewFragment : Fragment() {
     private lateinit var  binding: FragmentUnitContentViewBinding
     private lateinit var type: String
     private lateinit var unitDetails : SessionDisplayItem
+    private lateinit var lecturerDet : Lecturer
     private val viewModel: AcademicsViewHolder by viewModels()
 
 
@@ -44,6 +46,8 @@ class UnitContentViewFragment : Fragment() {
         arguments?.let {
             type = it.getString("type") ?: ""
             unitDetails = it.getParcelable("unitDetails") ?: SessionDisplayItem()
+            lecturerDet = it.getParcelable("lecturer") ?: Lecturer()
+
         }
 
     }
@@ -63,7 +67,7 @@ class UnitContentViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val defaultUnitOfferingID = "fe9dfc6f-ca3e-4f6b-8cfb-019cb6127efb"
+        val defaultUnitOfferingID = arguments?.getString("uoID") ?: ""
 
         // If unitDetails is empty/null use default
         val unitOfferingID = if (unitDetails.unitOfferingID.isNullOrBlank()) {
@@ -106,7 +110,6 @@ class UnitContentViewFragment : Fragment() {
                         if (adapter == null) {
                             binding.recyclerView.adapter = UnitContentAdapter(content, viewLifecycleOwner.lifecycleScope){ file ->
                                 openPdfExternally(file)
-
                             }
                         } else {
                             adapter.updateAdapter(content)
@@ -116,8 +119,13 @@ class UnitContentViewFragment : Fragment() {
                         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
                         val adapter = binding.recyclerView.adapter as? MediaAdapter
                         if (adapter == null) {
-                            binding.recyclerView.adapter = MediaAdapter(content){
-
+                            binding.recyclerView.adapter = MediaAdapter(content){ medium ->
+                                val fragment = MediaDetailsFragment().apply {
+                                    arguments = Bundle().apply {
+                                        putParcelable("item", medium)
+                                    }
+                                }
+                                fragment.show(childFragmentManager, "MediaDetailsFragment")
                             }
                         } else {
                             adapter.updateAdapter(content)

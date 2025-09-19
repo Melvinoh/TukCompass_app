@@ -17,6 +17,7 @@ import com.project.tukcompass.adapters.LecturerAdapter
 import com.project.tukcompass.adapters.PastPapersAdapter
 import com.project.tukcompass.databinding.FragmentUnitContentBinding
 import com.project.tukcompass.models.SessionDisplayItem
+import com.project.tukcompass.models.UnitItem
 import com.project.tukcompass.utills.Resource
 import com.project.tukcompass.viewModels.AcademicsViewHolder
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,8 +53,9 @@ class UnitContentFragment : Fragment() {
 
 
         val unitID = "ECSI4203"
+        val unit = arguments?.getParcelable<UnitItem>("unit") ?: UnitItem()
 
-        viewModel.getUnitDetails(unitID)
+        viewModel.getUnitDetails(unit.unitID)
 
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
@@ -121,8 +123,9 @@ class UnitContentFragment : Fragment() {
                     val adapter = binding.lecRv.adapter as? LecturerAdapter
 
                     if (adapter == null) {
-                        binding.lecRv.adapter = LecturerAdapter(lecturers) { pastPaper ->
-                            findNavController().navigate(R.id.unitEnrolmentFragment)
+                        binding.lecRv.adapter = LecturerAdapter(lecturers) { lecturer ->
+                            val bundle = bundleOf("lecturer" to lecturer)
+                            findNavController().navigate(R.id.unitEnrolmentFragment, bundle)
                         }
                     } else {
                         adapter.updateAdapter(lecturers)

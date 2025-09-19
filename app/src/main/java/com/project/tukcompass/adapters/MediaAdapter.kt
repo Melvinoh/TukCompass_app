@@ -51,7 +51,7 @@ class MediaAdapter(
             .into(holder.binding.imageView)
 
         holder.itemView.setOnClickListener {
-            onItemClick(media[position])
+            onItemClick(medium)
         }
     }
 

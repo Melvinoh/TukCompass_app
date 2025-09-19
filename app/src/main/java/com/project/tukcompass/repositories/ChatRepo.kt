@@ -73,6 +73,31 @@ class ChatRepo @Inject constructor(private val api: Api, private val socketManag
             Resource.Error("Network Error: ${e.localizedMessage}")
         }
     }
+    suspend fun deleteChat(chatId: String): Resource<Unit> {
+        return try {
+            val response = api.deleteChat(chatId)
+            if (response.isSuccessful) {
+                Resource.Success(Unit)
+            } else {
+                Resource.Error(response.errorBody()?.string() ?: "Delete failed")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Unexpected error")
+        }
+    }
+
+    suspend fun deleteMessage(messageID: String): Resource<Unit> {
+        return try {
+            val response = api.deleteMessage(messageID)
+            if (response.isSuccessful) {
+                Resource.Success(Unit)
+            } else {
+                Resource.Error(response.errorBody()?.string() ?: "Failed to delete chat")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Unexpected error")
+        }
+    }
     fun connectSocket(serverUrl: String, token: String) {
         socketManager.connect(serverUrl, token)
     }
@@ -81,7 +106,6 @@ class ChatRepo @Inject constructor(private val api: Api, private val socketManag
     }
      fun joinChat(chatId: String) = socketManager.joinChat(chatId)
 
-     fun sendMessage(msg: SendMessage) = socketManager.sendMessage(msg)
 
     suspend fun sendMessage(
         receiverID: String,

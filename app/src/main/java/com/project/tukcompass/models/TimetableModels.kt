@@ -29,6 +29,7 @@ data class SessionDisplayItem(
     val unitID: String = "",
     val unitOfferingID: String = "",
     val lecturerName: String = "",
+    val lecturerProfile: String? = null,
     val mode: String = "",
     val startTime: String = "",
     val endTime: String = ""

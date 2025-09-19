@@ -3,6 +3,7 @@ package com.project.tukcompass.viewModels
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import com.project.tukcompass.models.SendRes
 
 
 import com.project.tukcompass.repositories.ChatRepo
+import com.project.tukcompass.utills.EncryptedSharedPrefManager
 import com.project.tukcompass.utills.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -25,7 +27,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(){
+class ChatsViewModel@Inject constructor(private val repo: ChatRepo,private val sharedPrefManager: EncryptedSharedPrefManager) : ViewModel(){
 
     private var _chats = MutableLiveData<Resource<ChatResponse>>()
     val chats: LiveData<Resource<ChatResponse>> = _chats
@@ -37,6 +39,12 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
     val messageResponse: LiveData<MessageResponse> get() = _messageResponse
     val connected: StateFlow<Boolean> = repo.connected
     private var messagesJob: Job? = null
+
+    private val _deleteChatResult = MutableLiveData<Resource<Unit>>()
+    val deleteChatResult: LiveData<Resource<Unit>> = _deleteChatResult
+
+    private val _deleteMessageResult = MutableLiveData<Resource<Unit>>()
+    val deleteMessageResult: LiveData<Resource<Unit>> = _deleteMessageResult
 
 
     fun connectSocket(baseUrl: String, token: String) {
@@ -50,16 +58,30 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
                 val current = _messages.value
                 when (current) {
                     is Resource.Success -> {
-                        val updatedList = current.data.toMutableList().apply { add(msg) }
-                        _messages.postValue(Resource.Success(updatedList))
+                        val updatedList = current.data.toMutableList()
+                        val optimisticIndex = updatedList.indexOfFirst {
+                            it.messageID.startsWith("temp_") &&
+                                    it.senderID == msg.senderID &&
+                                    it.messageContent == msg.messageContent
+                        }
+                        if (optimisticIndex != -1) {
+                            updatedList[optimisticIndex] = msg
+                            Log.d("ChatsViewModel", "✅ Replaced optimistic msg at $optimisticIndex with ${msg.messageContent}")
+                        } else {
+                            updatedList.add(msg)
+                            Log.d("ChatsViewModel", "✅ Added incoming msg: ${msg.messageContent}")
+                        }
+                        _messages.value = Resource.Success(updatedList)
+                        Log.d("ChatsViewModel", "📩 messages LiveData: ${_messages.value}")
                     }
                     else -> {
-                        _messages.postValue(Resource.Success(listOf(msg)))
+                        _messages.value = Resource.Success(listOf(msg))
                     }
                 }
             }
         }
     }
+
 
     fun joinChat(chatId: String) = repo.joinChat(chatId)
     fun getUserchats(){
@@ -70,6 +92,20 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
         }
     }
 
+    fun deleteChat(chatId: String) {
+        _deleteChatResult.value = Resource.Loading
+        viewModelScope.launch {
+            getUserchats()
+            _deleteChatResult.value = repo.deleteChat(chatId)
+        }
+    }
+    fun deleteMessage(messageID: String, chatID: String) {
+        _deleteChatResult.value = Resource.Loading
+        viewModelScope.launch {
+            _deleteChatResult.value = repo.deleteMessage(messageID)
+            loadMessages(chatID)
+        }
+    }
     fun loadMessages(chatID: String) {
         viewModelScope.launch {
             _messages.value = Resource.Loading
@@ -80,7 +116,6 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
                 when (res) {
 
                     is Resource.Success -> {
-                        // res.data is MessageResponse; put the list into _messages
                         _messages.value = Resource.Success(res.data.messages)
                         _messageResponse.value = res.data
                     }
@@ -104,23 +139,32 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo) : ViewModel(
         imageUri: Uri?,
         context: Context
     ) {
+        val userID = sharedPrefManager.getUser()?.userID ?: "unknown_user"
         viewModelScope.launch {
             try {
                 val result = repo.sendMessage(receiverID, type, message, chatName, chatAvatar, imageUri, context)
                 Log.d("ChatsViewModel", "Send response: $result")
+                val optimisticMessage = MessageModel(
+                    messageID = "temp_${System.currentTimeMillis()}",
+                    createdAt = System.currentTimeMillis().toString(),
+                    chatID = "",
+                    messageContent = message,
+                    mediaUrl = imageUri?.toString() ?: "",
+                    senderID = userID,
+                    senderName = "You",
+                    profileUrl = ""
+                )
+                val updatedList = when (val current = _messages.value) {
+                    is Resource.Success -> current.data.toMutableList().apply { add(optimisticMessage) }
+                    else -> listOf(optimisticMessage)
+                }
+                _messages.value = Resource.Success(updatedList)
+                Log.d("ChatsViewModel", "✉️ Optimistic message added: $optimisticMessage")
 
                 if (result is Resource.Success) {
-                    val newMessage = result.data.data.getOrNull(0) ?: return@launch
-
-                    val updatedList = when (val current = _messages.value) {
-                        is Resource.Success -> current.data.toMutableList().apply { add(newMessage) }
-                        else -> listOf(newMessage)
-                    }
-
-                    _messages.value = Resource.Success(updatedList)
                     _sendResponse.value = result.data
                 } else if (result is Resource.Error) {
-                    Log.e("ChatsViewModel", "Send message error: ${result.message}")
+                    Log.e("ChatsViewModel", "❌ Send message error: ${result.message}")
                 }
 
             } catch (e: Exception) {

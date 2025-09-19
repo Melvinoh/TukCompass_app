@@ -35,7 +35,7 @@ data class  MessageModel(
 )
 data class SendRes(
     val message: String = "",
-    val data: List<MessageModel>,
+    val data: MessageModel,
     val lastSeen: List<Int>
 )
 data class SendMessage(

@@ -10,6 +10,9 @@
         android:gravity="end"
         android:orientation="vertical"
         android:padding="8dp"
+        android:background="@drawable/message_background_select"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,7 +28,7 @@
             android:id="@+id/textMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/grey_bg"
+            android:background="@drawable/reciever_bg"
             android:padding="15dp"
             android:text="look miae"
             android:textColor="@android:color/background_dark"

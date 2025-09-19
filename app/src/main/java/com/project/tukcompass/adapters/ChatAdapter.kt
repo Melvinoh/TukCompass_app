@@ -14,18 +14,19 @@ import com.project.tukcompass.models.ContentItem
 
 class ChatAdapter(
     private var chats: List<ChatModel>,
-    private val onItemClick: (ChatModel) -> Unit
+    val onItemClick: (ChatModel) -> Unit
 ): RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+
+    private val selectedItems = mutableSetOf<Int>()
+    var onItemLongClick: ((Int) -> Unit)? = null
+    var onItemClickWrapper: ((Int) -> Unit)? = null
 
 
     inner class ViewHolder(val binding: ViewholderChatsBinding) :
         RecyclerView.ViewHolder(binding.root)
 
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val binding = ViewholderChatsBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -35,10 +36,7 @@ class ChatAdapter(
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chat = chats[position]
         holder.binding.name.text = chat.receiverName
         holder.binding.text.text = chat.message
@@ -48,8 +46,10 @@ class ChatAdapter(
             .placeholder(R.drawable.ic_account)
             .into(holder.binding.avatarImage)
 
-        holder.itemView.setOnClickListener {
-            onItemClick(chat)
+        holder.itemView.setOnClickListener { onItemClickWrapper?.invoke(position) }
+        holder.itemView.setOnLongClickListener {
+            onItemLongClick?.invoke(position)
+            true
         }
     }
 
@@ -58,6 +58,21 @@ class ChatAdapter(
     fun updateAdapter(newChats: List<ChatModel>) {
         chats = newChats
         notifyDataSetChanged()
+    }
+    fun toggleSelection(position: Int) {
+        if (selectedItems.contains(position)) selectedItems.remove(position)
+        else selectedItems.add(position)
+        notifyItemChanged(position)
+    }
+
+    fun clearSelection() {
+        val copy = selectedItems.toSet()
+        selectedItems.clear()
+        copy.forEach { notifyItemChanged(it) }
+    }
+
+    fun getSelectedChats(): List<ChatModel> {
+        return selectedItems.map { chats[it] }
     }
 
 

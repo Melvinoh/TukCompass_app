@@ -19,6 +19,7 @@ class SocketManager {
     val connected: StateFlow<Boolean> = _connected
     private val _incomingMessages = MutableSharedFlow<MessageModel>(extraBufferCapacity = 64)
     val incomingMessages: SharedFlow<MessageModel> = _incomingMessages
+
     fun connect(baseUrl: String, token: String) {
         if (socket?.connected() == true) return
 
@@ -28,37 +29,52 @@ class SocketManager {
             reconnectionDelay = 1000
             query = "token=$token"
         }
-        socket = IO.socket(baseUrl, opts)
+        socket = IO.socket(baseUrl,opts)
 
         socket?.on(Socket.EVENT_CONNECT) {
             Log.d("SocketManager", "✅ Connected")
             _connected.tryEmit(true)
-        }?.on(Socket.EVENT_DISCONNECT) {
+        }
+
+        socket?.on(Socket.EVENT_DISCONNECT) {
             _connected.tryEmit(false)
             Log.w("SocketManager", "⚠️ Disconnected")
-        }?.on("new_message") { args ->
-            (args.firstOrNull() as? JSONObject)?.let { json ->
-                try {
+        }
+
+        socket?.on("new_message") { args ->
+
+            Log.d("SocketManager", "✅ New message: $args")
+            Log.d("SocketManager", "🔥 Raw args count: ${args.size}")
+            args.forEachIndexed { index, any ->
+                Log.d("SocketManager", "🔥 Arg[$index]: type=${any?.javaClass?.name}, value=$any")
+            }
+
+            try {
+                val wrapper = args.firstOrNull() as? JSONObject
+                val json = wrapper?.optJSONObject("newMessage")
+                Log.d("SocketManager", "✅ New message: $json")
+                if (json != null) {
                     val msg = MessageModel(
                         messageID = json.optString("messageID", ""),
                         createdAt = json.optString("createdAt", ""),
                         chatID = json.optString("chatID", ""),
-                        messageContent = json.optString("message", ""),
+                        messageContent = json.optString("messageContent", ""),
                         mediaUrl = json.optString("mediaUrl", ""),
                         senderID = json.optString("senderID", ""),
                         senderName = json.optString("senderName", ""),
                         profileUrl = json.optString("profileUrl", "")
                     )
+                    Log.d("SocketManager", "✅ New message: $msg")
                     _incomingMessages.tryEmit(msg)
-                } catch (e: Exception) {
-                    Log.e("SocketManager", "Error parsing new_message: ${e.message}")
                 }
+
+            } catch (e: Exception) {
+                Log.e("SocketManager", "Error parsing new_message: ${e.message}")
             }
         }
         socket?.on(Socket.EVENT_CONNECT_ERROR) { args ->
             Log.e("SocketManager", "❌ Connection error: ${args.joinToString()}")
         }
-
         socket?.connect()
     }
 
@@ -70,21 +86,22 @@ class SocketManager {
     }
 
     fun joinChat(chatId: String) {
-        val payload = JSONObject().apply { put("chatID", chatId) }
+        val payload = chatId
         socket?.emit("join_chat", payload)
+        Log.d("SocketManager", "✅ sending chatID: $payload")
     }
 
-    fun sendMessage(out: SendMessage) {
-        val obj = JSONObject().apply {
-            put("receiverID", out.receiverID)
-            put("type", out.type)
-            put("message", out.message)
-            out.chatName?.let { put("chatName", it) }       // keep chatName under chatName
-            out.chatAvatar?.let { put("chatAvatar", it) }   // keep chatAvatar under chatAvatar
-            if (out.file.isNotBlank()) put("file", out.file) // if you pass file URL/string
-        }
-        socket?.emit("send_message", obj)
-    }
+//    fun sendMessage(out: SendMessage) {
+//        val obj = JSONObject().apply {
+//            put("receiverID", out.receiverID)
+//            put("type", out.type)
+//            put("message", out.message)
+//            out.chatName?.let { put("chatName", it) }       // keep chatName under chatName
+//            out.chatAvatar?.let { put("chatAvatar", it) }   // keep chatAvatar under chatAvatar
+//            if (out.file.isNotBlank()) put("file", out.file) // if you pass file URL/string
+//        }
+//        socket?.emit("send_message", obj)
+//    }
 }
 
 

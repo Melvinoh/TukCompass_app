@@ -40,7 +40,7 @@ class CourseSemUnitAdapter(
             )
             adapter = CourseUnitAdapter(sem.units){ unit ->
                 val bundle = bundleOf("unit" to unit)
-                findNavController().navigate(R.id.unitContentFragment)
+                findNavController().navigate(R.id.unitContentFragment, bundle)
 
             }
         }

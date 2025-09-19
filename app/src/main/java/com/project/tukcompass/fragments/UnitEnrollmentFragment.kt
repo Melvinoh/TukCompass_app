@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.project.tukcompass.R
 import com.project.tukcompass.databinding.FragmentUnitEnrollmentBinding
+import com.project.tukcompass.models.Lecturer
 import com.project.tukcompass.models.SessionDisplayItem
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class UnitEnrollmentFragment : Fragment() {
 
     private  lateinit var binding: FragmentUnitEnrollmentBinding
+    private lateinit var lecturerDet: Lecturer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +40,18 @@ class UnitEnrollmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        lecturerDet = arguments?.getParcelable<Lecturer>("lecturer") ?: Lecturer()
+
         binding.backBtn.setOnClickListener {
             findNavController().popBackStack()
         }
         binding.submitBtn.setOnClickListener {
 
-            findNavController().navigate(R.id.unitDetailsFragment)
+            val bundle = Bundle().apply{
+                putString("uoID",lecturerDet.unitOfferingID)
+            }
+            findNavController().navigate(R.id.unitDetailsFragment,bundle)
         }
     }
 
