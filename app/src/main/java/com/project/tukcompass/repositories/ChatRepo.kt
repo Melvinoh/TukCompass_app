@@ -6,9 +6,9 @@ import android.provider.MediaStore
 import android.util.Log
 import com.project.tukcompass.Api
 import com.project.tukcompass.models.ChatResponse
+import com.project.tukcompass.models.DeleteResponse
 import com.project.tukcompass.models.MessageModel
 import com.project.tukcompass.models.MessageResponse
-import com.project.tukcompass.models.SendMessage
 import com.project.tukcompass.models.SendRes
 import com.project.tukcompass.socket.SocketManager
 import com.project.tukcompass.utills.Resource
@@ -73,11 +73,18 @@ class ChatRepo @Inject constructor(private val api: Api, private val socketManag
             Resource.Error("Network Error: ${e.localizedMessage}")
         }
     }
-    suspend fun deleteChat(chatId: String): Resource<Unit> {
+    suspend fun deleteChat(chatId: String): Resource<DeleteResponse> {
         return try {
             val response = api.deleteChat(chatId)
             if (response.isSuccessful) {
-                Resource.Success(Unit)
+                Log.d("DELETE CHAT", "Response Body: ${response.body()!!.message}")
+                val body = response.body()
+                if (body != null) {
+                    Resource.Success(body)
+
+                } else {
+                    Resource.Error("Response body is null")
+                }
             } else {
                 Resource.Error(response.errorBody()?.string() ?: "Delete failed")
             }
@@ -86,11 +93,18 @@ class ChatRepo @Inject constructor(private val api: Api, private val socketManag
         }
     }
 
-    suspend fun deleteMessage(messageID: String): Resource<Unit> {
+    suspend fun deleteMessage(messageID: String): Resource<DeleteResponse> {
         return try {
             val response = api.deleteMessage(messageID)
             if (response.isSuccessful) {
-                Resource.Success(Unit)
+                Log.d("DELETE MESSAGE", "Response Body: ${response.body()!!.message}")
+                val body = response.body()
+                if (body != null) {
+                    Resource.Success(body)
+
+                } else {
+                    Resource.Error("Response body is null")
+                }
             } else {
                 Resource.Error(response.errorBody()?.string() ?: "Failed to delete chat")
             }

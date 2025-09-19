@@ -87,18 +87,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/emptyState"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:src="@drawable/nos_sports"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintDimensionRatio="9:6"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 

@@ -78,6 +78,8 @@ class MessageFragment : Fragment() {
             onItemLongClick = { pos -> enableActionMode(pos) }
             onItemClick = { pos -> if (actionMode != null) toggleSelection(pos) }
         }
+
+
         binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.chatMessagesRecyclerView.adapter = adapter
 
@@ -112,10 +114,12 @@ class MessageFragment : Fragment() {
             when (resource) {
                 is Resource.Success -> {
                     val results = resource.data ?: emptyList()
+
                     adapter.submitList(results)
                     if (results.isNotEmpty()) {
                         binding.chatMessagesRecyclerView.scrollToPosition(results.size - 1)
                     }
+
                 }
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
@@ -165,6 +169,7 @@ class MessageFragment : Fragment() {
 
     private fun enableActionMode(position: Int) {
         if (actionMode == null) {
+            binding.topBar.visibility = View.GONE
             actionMode = requireActivity().startActionMode(actionModeCallback)
         }
         toggleSelection(position)
@@ -175,7 +180,7 @@ class MessageFragment : Fragment() {
         if (count == 0) {
             actionMode?.finish()
         } else {
-            actionMode?.title = "$count selected"
+            actionMode?.title = "$count"
         }
     }
     private val actionModeCallback = object : ActionMode.Callback {
@@ -227,6 +232,7 @@ class MessageFragment : Fragment() {
         override fun onDestroyActionMode(mode: ActionMode?) {
             adapter.clearSelection()
             actionMode = null
+            binding.topBar.visibility = View.VISIBLE
         }
     }
     companion object {

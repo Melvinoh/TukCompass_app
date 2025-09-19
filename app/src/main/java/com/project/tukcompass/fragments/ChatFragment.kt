@@ -34,7 +34,7 @@ class ChatFragment : Fragment() {
     private lateinit var binding: FragmentChatBinding
     private lateinit var sharedPrefManager: EncryptedSharedPrefManager
     private val viewModel: ChatsViewModel by viewModels()
-    private val serverUrl = "http://10.0.2.2:3000"
+    private val serverUrl = "https://tukcompass-production-7f2a.up.railway.app/"
     private var socketConnectedInitiated = false
 
     private var actionMode: ActionMode? = null

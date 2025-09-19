@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.tukcompass.models.ChatResponse
+import com.project.tukcompass.models.DeleteResponse
 import com.project.tukcompass.models.MessageModel
 import com.project.tukcompass.models.MessageResponse
 import com.project.tukcompass.models.SendMessage
@@ -40,11 +41,11 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo,private val s
     val connected: StateFlow<Boolean> = repo.connected
     private var messagesJob: Job? = null
 
-    private val _deleteChatResult = MutableLiveData<Resource<Unit>>()
-    val deleteChatResult: LiveData<Resource<Unit>> = _deleteChatResult
+    private val _deleteChatResult = MutableLiveData<Resource<DeleteResponse>>()
+    val deleteChatResult: LiveData<Resource<DeleteResponse>> = _deleteChatResult
 
-    private val _deleteMessageResult = MutableLiveData<Resource<Unit>>()
-    val deleteMessageResult: LiveData<Resource<Unit>> = _deleteMessageResult
+    private val _deleteMessageResult = MutableLiveData<Resource<DeleteResponse>>()
+    val deleteMessageResult: LiveData<Resource<DeleteResponse>> = _deleteMessageResult
 
 
     fun connectSocket(baseUrl: String, token: String) {
@@ -66,16 +67,22 @@ class ChatsViewModel@Inject constructor(private val repo: ChatRepo,private val s
                         }
                         if (optimisticIndex != -1) {
                             updatedList[optimisticIndex] = msg
-                            Log.d("ChatsViewModel", "✅ Replaced optimistic msg at $optimisticIndex with ${msg.messageContent}")
+                            Log.d(
+                                "ChatsViewModel",
+                                "✅ Replaced optimistic msg at $optimisticIndex with ${msg.messageContent}"
+                            )
                         } else {
                             updatedList.add(msg)
                             Log.d("ChatsViewModel", "✅ Added incoming msg: ${msg.messageContent}")
                         }
                         _messages.value = Resource.Success(updatedList)
                         Log.d("ChatsViewModel", "📩 messages LiveData: ${_messages.value}")
+                        loadMessages(msg.chatID)
                     }
+
                     else -> {
                         _messages.value = Resource.Success(listOf(msg))
+                        loadMessages(msg.chatID)
                     }
                 }
             }

@@ -10,43 +10,20 @@ import com.project.tukcompass.databinding.ViewholderSenderBinding
 import com.project.tukcompass.models.MessageModel
 
 class MessageAdapter(
-    private val currentUserId: String?
+
+    private val currentUserId: String?,
+
+
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val messages = mutableListOf<MessageModel>()
     private val selectedItems = mutableSetOf<Int>()
-
     var onItemLongClick: ((Int) -> Unit)? = null
     var onItemClick: ((Int) -> Unit)? = null
 
     companion object {
         private const val VIEW_TYPE_SENT = 1
         private const val VIEW_TYPE_RECEIVED = 2
-    }
-
-    fun submitList(newMessages: List<MessageModel>) {
-        messages.clear()
-        messages.addAll(newMessages)
-        notifyDataSetChanged()
-    }
-
-    fun toggleSelection(position: Int) {
-        if (selectedItems.contains(position)) {
-            selectedItems.remove(position)
-        } else {
-            selectedItems.add(position)
-        }
-        notifyItemChanged(position)
-    }
-
-    fun clearSelection() {
-        val copy = selectedItems.toSet()
-        selectedItems.clear()
-        copy.forEach { notifyItemChanged(it) }
-    }
-
-    fun getSelectedMessages(): List<MessageModel> {
-        return selectedItems.map { messages[it] }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -131,6 +108,31 @@ class MessageAdapter(
                 binding.imageMedia.visibility = View.GONE
             }
         }
+    }
+
+    fun submitList(newMessages: List<MessageModel>) {
+        messages.clear()
+        messages.addAll(newMessages)
+        notifyDataSetChanged()
+    }
+
+    fun toggleSelection(position: Int) {
+        if (selectedItems.contains(position)) {
+            selectedItems.remove(position)
+        } else {
+            selectedItems.add(position)
+        }
+        notifyItemChanged(position)
+    }
+
+    fun clearSelection() {
+        val copy = selectedItems.toSet()
+        selectedItems.clear()
+        copy.forEach { notifyItemChanged(it) }
+    }
+
+    fun getSelectedMessages(): List<MessageModel> {
+        return selectedItems.map { messages[it] }
     }
 }
 

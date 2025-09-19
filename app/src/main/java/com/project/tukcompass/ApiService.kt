@@ -14,6 +14,7 @@ import com.project.tukcompass.models.ContactsRes
 import com.project.tukcompass.models.CourseRequest
 import com.project.tukcompass.models.CourseResponse
 import com.project.tukcompass.models.CourseUnitsResponse
+import com.project.tukcompass.models.DeleteResponse
 import com.project.tukcompass.models.EnrollmentStatus
 import com.project.tukcompass.models.EventRequest
 
@@ -129,10 +130,10 @@ interface Api {
  @GET("chats/getChatMessages/{chatID}")
  suspend fun getChatMessages(@Path("chatID") chatID: String): Response<MessageResponse>
  @DELETE("chats/deleteChat/{chatID}")
- suspend fun deleteChat(@Path("chatID") chatID: String): Response<Unit>
+ suspend fun deleteChat(@Path("chatID") chatID: String): Response<DeleteResponse>
 
  @DELETE("chats/deleteMessage/{messageID}")
- suspend fun deleteMessage(@Path("messageID") messageID: String): Response<Unit>
+ suspend fun deleteMessage(@Path("messageID") messageID: String): Response<DeleteResponse>
  @Multipart
  @POST("chats/sendMessage")
  suspend fun sendMessageAPI(

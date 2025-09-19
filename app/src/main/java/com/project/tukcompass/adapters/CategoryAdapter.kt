@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.tukcompass.databinding.VieholderCategoryBinding
+import com.project.tukcompass.databinding.ViewholderGroupsBinding
 import com.project.tukcompass.models.CategoryModel
 
 class CategoryAdapter(

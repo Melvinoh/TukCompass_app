@@ -63,7 +63,6 @@ class AllClubSportFragment : Fragment() {
                     val clubs = myClubSports.filter { it.type == "clubs" }
                     val sports = myClubSports.filter { it.type == "sports" }
 
-                    binding.emptyState.visibility = View.GONE
                     binding.emptyStateSport.visibility = View.GONE
 
                     // Setup clubs RecyclerView
